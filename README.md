@@ -94,6 +94,10 @@ Set `NOC_UPSTREAM_URL` in the dashboard container. Use
 container must use `NOC_BASE_PATH=/noc` so its browser assets and API requests
 remain below the website prefix.
 
+Administrator protection is enabled by default. For an isolated authenticated
+test account without administrator privileges, set `NOC_ADMIN_ONLY=false` in
+the test container only. Never use this override in production.
+
 The `start-app.sh` helper forwards `NOC_UPSTREAM_URL` automatically:
 
 ```bash

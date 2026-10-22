@@ -520,7 +520,7 @@ def noc_admin_required(f):
     def decorated_function(*args, **kwargs):
         if "user" not in session:
             return redirect(url_for("login"))
-        if session.get("role") != 0:
+        if NOC_ADMIN_ONLY and session.get("role") != 0:
             return "Forbidden", 403
         return f(*args, **kwargs)
 
@@ -528,6 +528,9 @@ def noc_admin_required(f):
 
 
 NOC_UPSTREAM_URL = os.environ.get("NOC_UPSTREAM_URL", "http://127.0.0.1:8060").rstrip("/")
+NOC_ADMIN_ONLY = os.environ.get("NOC_ADMIN_ONLY", "true").strip().lower() not in {
+    "0", "false", "no", "off"
+}
 
 
 @app.route("/noc", defaults={"noc_path": ""}, methods=["GET"])
