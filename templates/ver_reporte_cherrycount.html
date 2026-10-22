@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="">
+<!--<![endif]-->
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Mis Reportes</title>
+  <meta name="description" content="Ela Admin - HTML5 Admin Template" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <link rel="apple-touch-icon" href="/static/images/FIC_logo_pestana.png" />
+  <link rel="shortcut icon" href="/static/images/FIC_logo_pestana.png" />
+
+  <!-- <link rel="apple-touch-icon" href="https://i.imgur.com/QRAUqs9.png" />
+    <link rel="shortcut icon" href="https://i.imgur.com/QRAUqs9.png" /> -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.0/normalize.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css" />
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/pixeden-stroke-7-icon@1.2.3/pe-icon-7-stroke/dist/pe-icon-7-stroke.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.0/css/flag-icon.min.css" />
+
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/cs-skin-elastic.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <style>
+    .col-lg-6 {
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
+  </style>
+
+  <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/html5shiv/3.7.3/html5shiv.min.js"></script> -->
+</head>
+
+<body>
+  <!-- Left Panel -->
+  {% include 'lateral.html' %}
+  <!-- Left Panel -->
+
+  <!-- Right Panel -->
+
+  <div id="right-panel" class="right-panel">
+    <!-- Header-->
+    {% include 'header.html' %}
+    <!-- /header -->
+    <!-- Header-->
+
+    <div class="breadcrumbs">
+      <div class="breadcrumbs-inner">
+        <div class="row m-0">
+          <h2>Reporte {{report_name}} de Conteo Automatizado de Cerezas en campo {{field_name}},
+            {{day}}/{{month}}/{{year}} </h2>
+
+        </div>
+        <div class="row">
+          &nbsp;
+        </div>
+        <div class="row m-0">
+          <div class="col-12">
+            <div class="parrafo-upload">
+              <p>Para la evaluación de riesgos y estimación de la producción de cereza en la Región del Libertador
+                Bernardo O'Higgins, se han contabilizado los datos del año {{year}} en su predio. Se contabilizaron
+                {{n_trees}}
+                árboles dando una cantidad promedio de {{cherry_mean}} cerezas por árbol. Para más detalle ver tabla 1.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="animated fadeIn">
+        <div class="row">
+          <div class="col-lg-6">
+            <!-- TABLA A REEMPLAZAR AL CONECTAR CON LA BASE DE DATOS -->
+            <div class="card">
+              <div class="card-header">
+                <strong class="card-title">Tabla 1: Conteo asistido mediante inteligencia artificial de cerezas</strong>
+              </div>
+              <div class="table-stats order-table ov-h">
+                <table class="table ">
+                  <thead>
+                    <tr>
+                      <th>Cuartel</th>
+                      <th>Zona</th>
+                      <th>Variedad</th>
+                      <th>Planta</th>
+                      <th>Roja</th>
+                      <th>Naranja</th>
+                      <th>Verde</th>
+                      <th>Madurez [%]</th>
+                      <th>Conteo de cerezas</th>
+                      <th>Rango de cerezas</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tableBody">
+
+                  </tbody>
+                </table>
+              </div> <!-- /.table-stats -->
+            </div>
+
+            <script id="reports-data" type="application/json">
+                      {{ report_dict | tojson }}
+                    </script>
+            <script>
+              data = JSON.parse(document.getElementById('reports-data').textContent)
+              const tableBody = document.getElementById('tableBody');
+              for (const r of data) {
+                var rango = r["Estimados max"].toFixed(3) + " - " + r["Estimados min"].toFixed(3)
+                const row = `<tr>
+                          <td>${r.Cuartel}</td>
+                          <td>${r.Zona}</td>
+                          <td>${r.Variedad}</td>
+                          <td>${r.Planta}</td>
+                          <td>${r.Roja.toFixed(3)}</td>
+                          <td>${r.Naranja.toFixed(3)}</td>
+                          <td>${r.Verde.toFixed(3)}</td>
+                          <td>${r.Madurez.toFixed(3)}</td>
+                          <td>${r.Estimados.toFixed(3)}</td>
+                          <td>${rango}</td>
+                          
+                        </tr>`;
+                tableBody.insertAdjacentHTML('beforeend', row);
+              }
+            </script>
+            <div class="row">
+              <div class="col-12">
+                <div class="parrafo-upload">
+                  <p>A continuación se muestra un mapa de calor que representa las zonas de mayor y menor concentración
+                    de cerezas.</p>
+                </div>
+              </div>
+            </div>
+            <div class="card-header">
+              <strong class="card-title">Imagen 1: Mapa de densidad de cerezas en el campo. Se pueden distinguir zonas
+                de baja
+                concentración de cerezas (azul y celeste) de zonas de alta concentracion (rojo y amarillo). Se estima
+                valores de densidad a partir de las grabaciones realizadas en campo (arboles de control) el cual es
+                extrapolado a regiones del predio que no hayan sido grabadas.</strong>
+            </div>
+            <div class="parrafo-metodologia">
+              <img src="{{ url_for('get_image', filepath=image) }}" alt="Mapa">
+            </div>
+            <style>
+              #map {
+                height: 70vh;
+                width: 70%;
+              }
+
+              .map-container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                position: relative;
+                z-index: 1;
+              }
+              
+              /* Contener los controles de Leaflet dentro del mapa */
+              .leaflet-control-container {
+                position: static;
+                z-index: auto;
+              }
+            </style>
+            <div class="card-header">
+              <strong class="card-title">Georeferencia de campo evaluado.</strong>
+            </div>
+            <div class="map-container">
+              <div id="map"></div>
+            </div>
+            <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+            <script>
+              const locations = JSON.parse(`{{ loc_matrix | tojson | safe }}`);
+              
+              var locArray = [];
+              var sum_lat = 0;
+              var sum_lng = 0;
+              for (const tree of locations) {
+                var loc = tree[1].replaceAll(" ", "").replaceAll("(", "").replaceAll(")", "");
+                loc = loc.split(",");
+                sum_lat = sum_lat + Number(loc[0]);
+                sum_lng = sum_lng + Number(loc[1]);
+                locArray.push([tree[0], loc]);
+              }
+
+              // Calcular centro a partir de las ubicaciones
+              var centerLat = locArray.length > 0 ? (sum_lat / locArray.length) : -34.05815;
+              var centerLng = locArray.length > 0 ? (sum_lng / locArray.length) : -70.702813;
+              
+              // URLs de los tiles
+              var esri_url = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
+              var esri_attribution = 'Tiles &copy; Esri';
+              var osm_url = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+              var osm_attribution = '© OpenStreetMap contributors';
+
+              // Capas de tiles
+              var lyr_satellite = L.tileLayer(esri_url, {maxZoom: 20, attribution: esri_attribution});
+              var lyr_streets = L.tileLayer(osm_url, {maxZoom: 19, attribution: osm_attribution});
+              
+              // Crear el mapa con centro calculado y zoom 13
+              var map = L.map('map', {
+                center: [centerLat, centerLng],
+                zoom: 16,
+                layers: [lyr_satellite]  // Satelital por defecto
+              });
+
+              // Agregar marcadores de cada árbol
+              for (const tree of locArray) {
+                L.marker([tree[1][0], tree[1][1]]).addTo(map)
+                  .bindPopup(tree[0]);
+              }
+
+              // Control de capas
+              var baseMaps = {
+                "Satellite": lyr_satellite,
+                "Streets": lyr_streets
+              };
+
+              L.control.layers(baseMaps).addTo(map);
+              
+            </script>
+
+            <div class="card-footer text-center">
+              <a href="{{ excel_path }}" class="btn btn-primary btn-lg shadow-sm mx-2" download>
+                <i class="ti-download mr-2"></i><strong>Descargar planilla excel</strong>
+              </a>
+
+              <a href="{{ pdf_path }}" class="btn btn-primary btn-lg shadow-sm mx-2" download>
+                <i class="ti-download mr-2"></i><strong>Descargar PDF</strong>
+              </a>
+            </div>
+
+
+          </div>
+
+        </div>
+        <!-- .animated -->
+      </div>
+      <!-- .content -->
+
+      <div class="clearfix"></div>
+
+      {% include 'footer.html' %}
+    </div>
+    <!-- /#right-panel -->
+
+    <!-- Right Panel -->
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@2.2.4/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.4/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-match-height@0.7.2/dist/jquery.matchHeight.min.js"></script>
+    <!-- <script src="assets/js/main.js"></script> -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+
+</html>

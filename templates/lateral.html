@@ -1,0 +1,38 @@
+<aside id="left-panel" class="left-panel no-print">
+    <nav class="navbar navbar-expand-sm navbar-default">
+        <div id="main-menu" class="main-menu collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="{{ url_for('home') }}"><i class="menu-icon ti-home"></i>Home</a>
+                </li>
+                <li class="menu-title">Servicios</li><!-- /.menu-title -->
+
+                {% include 'horas_frio_tab.html' %}
+
+                {% include 'conteo_cerezas_tab.html' %}
+
+                {% include 'conteo_dardos_tab.html' %}
+
+                <li class="menu-title">Extras</li><!-- /.menu-title -->
+
+                <li>
+                    <a href="{{ url_for('contacto') }}"> <i class="menu-icon ti-email"></i>Contacto</a>
+
+                </li>
+                <!-- SECCION METODOLOGIA -->
+                <!-- <li>
+
+                    <a href="{{ url_for('metodologia') }}"> <i class="menu-icon ti-book"></i>Metodologías</a>
+
+                </li> -->
+
+                {% if show_admin_tab %}
+                {% include 'admin_tab.html' %}
+                {% endif %}
+
+            </ul>
+            </li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </nav>
+</aside>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Universidad de O'Higgins</title>
+    <link rel="apple-touch-icon" href="/static/images/FIC_logo_pestana.png" />
+    <link rel="shortcut icon" href="/static/images/FIC_logo_pestana.png" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static',filename='css/login_template.css') }}"
+  
+    />
+  </head>
+  <body>
+    <div class="main">
+      <div class="container">
+        <div class="login-container">
+          <div class="login-card">
+            <div class="login-header">
+              <img
+          src="{{ url_for('static',filename='images/UOHCerezas.jpg') }}" alt="Logo" style="max-width: 100%;height: auto; display: block;" /> 
+              
+            </div>
+
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <div class="error-alert">
+              {% for msg in messages %}
+              <p>{{ msg }}</p>
+              {% endfor %}
+            </div>
+            {% endif %}
+            {% endwith %}
+            
+            <p style="text-align: center; padding: 10%;">
+              {{ text }}
+            </p>
+            
+            <a href="{{ url_for('login') }}">
+            <button class="signup-btn">
+                <span class="btn-text">Volver a la página inicial</span>
+                <span class="btn-loader"></span>
+              </button>
+              </a>
+          </div>
+        </div>
+
+        
+
+      </div>
+      <footer class="site-footer" style="flex-shrink: 0;">
+        <div class="Logos">
+          <img
+            class="imagen-footer img-fluid"
+            src="/static/images/Sponsors.png"
+            alt="Sponsors"
+          />
+          <div class="financiado">
+            <p>
+              Proyecto financiado con el Fondo de Innovación Para la Competitividad
+              Regional del Gobierno Regional del Libertador General Bernardo O'Higgins
+              y su Consejo Regional
+            </p>
+            <p>ID:40059070-0</p>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+  <script src="{{ url_for('static',filename='js/form-utils.js') }}"></script>
+  <script src="{{ url_for('static',filename='js/login.js') }}"></script>
+</html>

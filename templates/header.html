@@ -1,0 +1,40 @@
+<header id="header" class="header no-print">
+  <style>
+    .name-style {
+      display: flex;
+      /* Enable flexbox */
+      align-items: center;
+      /* Vertical centering */
+      justify-content: center;
+      /* Horizontal centering */
+
+    }
+  </style>
+  <div class="top-left">
+
+    <div class="navbar-header">
+      <a class="navbar-brand text-center" href="{{ url_for('home') }}"> <img
+          src="{{ url_for('static',filename='images/UOHCerezas.jpg') }}" alt="Logo" style="max-height: 50px" /> 
+        </a>
+      <a class="navbar-brand hidden"><img src="{{ url_for('static',filename='images/FIC_logo2.png') }}"
+          alt="Logo" /></a>
+      <a id="menuToggle" class="menutoggle text-center"><i class="fa fa-bars"></i></a>
+    </div>
+  </div>
+  <div class="top-right">
+    <div class="header-menu">
+      <a class="name-style">
+        {{name}}
+      </a>
+      <div class="user-area dropdown float-right">
+        <a href="#" class="dropdown-toggle active" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fa fa-user"></i>
+        </a>
+
+        <div class="user-menu dropdown-menu">
+          <a class="nav-link" href="{{ url_for('logout') }}"><i class="fa fa-power -off"></i>Cerrar Sesión</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>

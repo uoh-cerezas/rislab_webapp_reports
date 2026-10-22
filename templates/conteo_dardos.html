@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="">
+  <!--<![endif]-->
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Conteo Dardos</title>
+    <meta name="description" content="Ela Admin - HTML5 Admin Template" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <link rel="apple-touch-icon" href="/static/images/FIC_logo_pestana.png" />
+  <link rel="shortcut icon" href="/static/images/FIC_logo_pestana.png" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.0/normalize.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/pixeden-stroke-7-icon@1.2.3/pe-icon-7-stroke/dist/pe-icon-7-stroke.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.0/css/flag-icon.min.css"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link rel="stylesheet" href="static/css/cs-skin-elastic.css">
+    <link rel="stylesheet" href="static/css/style.css">
+    <style>
+      .col-lg-6
+    {flex: 0 0 100%;
+    max-width: 100%;}</style>
+
+  <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/html5shiv/3.7.3/html5shiv.min.js"></script> -->
+  </head>
+  <body>
+    <!-- Left Panel -->
+    {% include 'lateral.html' %}
+    <!-- Left Panel -->
+
+    <!-- Right Panel -->
+
+    <div id="right-panel" class="right-panel">
+      <!-- Header-->
+      {% include 'header.html' %}
+      <!-- /header -->
+      <!-- Header-->
+
+        <div class="breadcrumbs">
+            <div class="breadcrumbs-inner">
+        <div class="row m-0">
+          <h2>Sistema automatizado de conteo de dardos</h2>
+          
+        </div>
+          <div class="row">
+                                  &nbsp;
+                            </div>
+    
+        <div class="row m-0">
+          <div class="col-12">
+            <div class="parrafo-upload">
+              <p>Acceso a la innovación en la agricultura para la region del Libertador General Bernardo O'Higgins utilizando herramientas
+                de inteligencia artificial y visión computacional.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <div class="content">
+      <div class="container-fluid">
+        <div class="animated fadeIn">
+                                    
+          <div class="row">
+            <style>
+              .reportesCherryCount, 
+              .GenNuevoReporte{
+                  margin-top: 50px;
+                  background-color: #BD4DE0;
+                  width: clamp(200px, 480px, 600px);
+                  height: clamp(100px, 190px, 225px);
+                  color: white;
+                  display: flex;
+                  flex-direction: column;
+                  justify-content: center;
+                  padding: 30px;
+                  background-size: 200px;
+                  background-repeat: no-repeat;
+                  background-position: right center;
+                  margin-left: auto; 
+                  margin-right: auto;
+              }
+              .reportesCherryCount{
+                  background-image: url('../static/images/file_list_page_icon2.svg');
+              }
+
+              .GenNuevoReporte{
+                  
+                  background-image: url('../static/images/food_gastronomy_icon2.svg');
+              }
+
+              .reportesCherryCount #irReporte, .GenNuevoReporte #NuevoReporte{
+                  padding: 2px;
+                  margin: 0 auto;
+                  border-radius: 5px;
+                  background-color: #ffffff;
+                  border-color: #ffffff;
+                  border-width: 5px;
+                  display: flex;
+                  flex-direction: row;
+                  transition: all 0.3s ease;
+              }
+
+              .reportesCherryCount #irReporte a, .GenNuevoReporte #NuevoReporte a{
+                  text-decoration: none;
+                  color: #BD4DE0;
+                  padding-left: 8px;
+                  padding-right: 8px;
+              }
+
+              .reportesCherryCount #irReporte:hover, .GenNuevoReporte #NuevoReporte:hover{
+                  background-color: #ffffff;
+                  color: #BD4DE0;
+                  transform: translateX(5px);
+              }
+
+              .reportesCherryCount h2, .GenNuevoReporte h2, p{
+                  text-align: center;
+                  color: white;
+              }
+            </style>
+            <div class="col">
+            <div class="reportesCherryCount">
+            <h2>Mis reportes</h2>
+            <p>Accede a reportes generados previamente</p>
+            <button id="irReporte">
+              <a href="reportes_budscount"
+                >Ir a mis reportes
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="#BD4DE0"
+                  class="icon icon-tabler icons-tabler-filled icon-tabler-circle-arrow-up-right"
+                >
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                  <path
+                    d="M17 3.34a10 10 0 1 1 -14.995 8.984l-.005 -.324l.005 -.324a10 10 0 0 1 14.995 -8.336zm-2 4.66h-6l-.117 .007a1 1 0 0 0 -.883 .993l.007 .117a1 1 0 0 0 .993 .883h3.584l-4.291 4.293l-.083 .094a1 1 0 0 0 1.497 1.32l4.293 -4.293v3.586l.007 .117a1 1 0 0 0 1.993 -.117v-6l-.007 -.117l-.029 -.149l-.035 -.105l-.054 -.113l-.071 -.111a1.01 1.01 0 0 0 -.097 -.112l-.09 -.08l-.096 -.067l-.098 -.052l-.11 -.044l-.112 -.03l-.126 -.017l-.075 -.003z"
+                  />
+                </svg>
+              </a>
+            </button>
+          </div>
+            </div>
+          
+          <div class="col">
+          <div class="GenNuevoReporte">
+          <h2>Nuevo reporte</h2>
+          <p>Genera un nuevo reporte de conteo de dardos</p>
+          <style>
+            #NuevoReporte {
+              color: #BD4DE0;              
+              cursor: pointer;                         
+            }
+
+          </style>
+          <button
+  id="NuevoReporte"
+  data-enabled="{{ 'true' if show_budscount_tab else 'false' }}"
+  {% if not show_budscount_tab %}disabled{% endif %}
+>
+              Ir a nuevo reporte
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="#BD4DE0"
+                class="icon icon-tabler icons-tabler-filled icon-tabler-circle-arrow-up-right"
+              >
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path
+                  d="M17 3.34a10 10 0 1 1 -14.995 8.984l-.005 -.324l.005 -.324a10 10 0 0 1 14.995 -8.336zm-2 4.66h-6l-.117 .007a1 1 0 0 0 -.883 .993l.007 .117a1 1 0 0 0 .993 .883h3.584l-4.291 4.293l-.083 .094a1 1 0 0 0 1.497 1.32l4.293 -4.293v3.586l.007 .117a1 1 0 0 0 1.993 -.117v-6l-.007 -.117l-.029 -.149l-.035 -.105l-.054 -.113l-.071 -.111a1.01 1.01 0 0 0 -.097 -.112l-.09 -.08l-.096 -.067l-.098 -.052l-.11 -.044l-.112 -.03l-.126 -.017l-.075 -.003z"
+                />
+              </svg>
+            </a>
+          </button>
+          <script>
+  document.getElementById("NuevoReporte").addEventListener("click", function () {
+    const enabled = this.dataset.enabled === "true";
+    if (enabled) {
+      window.location.href = "{{ url_for('upload_budscount') }}";
+    }
+  });
+</script>
+        </div>
+          </div>
+
+
+          </div>
+        </div>
+        </div>
+      </div>
+
+      <style>
+        
+        .Cerezas {
+            margin-top: 70px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .Cerezas h2{
+            margin: 40px;
+        }
+
+        .Images{
+            display: flex;
+            flex-direction: row;
+            row-gap: 10px;
+            column-gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        #cerezaHome {
+            width: clamp(200px, 350px, 400px);
+            height: auto;
+            max-height: 230px;
+            border-radius: 20px;
+            object-fit: cover;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        #cerezaHome:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+      </style>
+        <div class="row">
+                                  &nbsp;
+                            </div>
+    
+      <div class="Cerezas">
+        <h2><strong> Imagenes de análisis</strong></h2>
+        <div class="Images">
+          <img
+            id="cerezaHome"
+            src="/static/images/buds1.png"
+            alt="LogoProvisional"
+          />
+          <img
+            id="cerezaHome"
+            src="/static/images/buds2.png"
+            alt="LogoProvisional"
+          />
+          <img
+            id="cerezaHome"
+            src="/static/images/buds1.png"
+            alt="LogoProvisional"
+          />
+        </div>
+      </div>
+      <div class="row">
+                                  &nbsp;
+                            </div>
+      {% include 'footer.html' %}
+    <!-- /#right-panel -->
+ 
+    <!-- Right Panel -->
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@2.2.4/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.4/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-match-height@0.7.2/dist/jquery.matchHeight.min.js"></script>
+    <!-- <script src="assets/js/main.js"></script> -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  </body>
+</html>

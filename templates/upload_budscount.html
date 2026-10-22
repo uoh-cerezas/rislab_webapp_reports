@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="">
+<!--<![endif]-->
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Subir archivos</title>
+  <meta name="description" content="Ela Admin - HTML5 Admin Template" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <link rel="apple-touch-icon" href="/static/images/FIC_logo_pestana.png" />
+  <link rel="shortcut icon" href="/static/images/FIC_logo_pestana.png" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.0/normalize.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css" />
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/pixeden-stroke-7-icon@1.2.3/pe-icon-7-stroke/dist/pe-icon-7-stroke.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.0/css/flag-icon.min.css" />
+
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="static/css/cs-skin-elastic.css">
+  <link rel="stylesheet" href="static/css/style.css">
+
+  <style>
+    .col-lg-6 {
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
+  </style>
+  <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/html5shiv/3.7.3/html5shiv.min.js"></script> -->
+</head>
+
+<body>
+  <!-- Left Panel -->
+  {% include 'lateral.html' %}
+  <!-- Left Panel -->
+
+  <!-- Right Panel -->
+
+  <div id="right-panel" class="right-panel">
+    <!-- Header-->
+    {% include 'header.html' %}
+    <!-- /header -->
+    <!-- Header-->
+
+    <div class="breadcrumbs">
+      <div class="breadcrumbs-inner">
+        <div class="row m-0">
+          <h2>Nuevo reporte</h2>
+
+        </div>
+        <div class="row">
+          &nbsp;
+        </div>
+        <div class="row m-0">
+          <div class="col-12">
+            <div class="parrafo-upload">
+              <p>Sube los archivos necesarios para generar el reporte. Asegúrate de que los archivos estén en el
+                formato correcto.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="animated fadeIn">
+        <div class="row justify-content-center">
+          <div class="col-lg-11 col-md-12">
+            <div class="card">
+              <div class="card-header">
+                <i class="ti-cloud-up"></i>
+                <strong>Subida de Archivos BUDS</strong>
+              </div> <!--FIN CARD HEADER-->
+
+              <div class="card-body">
+                <form id="uploadForm" method="POST" enctype="multipart/form-data">
+                  <!-- Seleccion de campo -->
+                  <div class="row form-group">
+                    <div class="col col-md-3"><label class=" form-control-label">Campo <span class="text-danger">*</span></label></div>
+                    <div class="col-12 col-md-9">
+                      <select name="select-field" id="select-field" class="form-control">
+                        <option value="0">Seleccione un campo</option>
+                        {% for i in range(fields[0] | length) %}
+                        <option value="{{ fields[1][i] }}">{{ fields[0][i] }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+                  <!-- Seleccion de Cuartel -->
+                  <div class="row form-group">
+                    <div class="col col-md-3"><label class=" form-control-label">Cuartel <span class="text-danger">*</span></label></div>
+                    <div class="col-12 col-md-9">
+                      <select name="select-zone" id="select-zone" class="form-control">
+                        <option value="0">Seleccione un cuartel</option>
+                      </select>
+                    </div>
+                  </div>
+                  <!-- Tipo de archivo -->
+                  <div class="row form-group">
+                    <div class="col col-md-3"><label class=" form-control-label">Tipo <span class="text-danger">*</span></label></div>
+                    <div class="col-12 col-md-9">
+                      <select name="select-type-file" id="select-type-file" class="form-control">
+                        <option value="0">Seleccione un tipo de archivo</option>
+                        <option value="image">Imágenes</option>
+                        <option value="video">Videos</option>
+                      </select>
+                    </div>
+                  </div>
+                  <!-- Extension del archivo -->
+                  <div class="row form-group">
+                    <div class="col col-md-3"><label class=" form-control-label">Extensión <span class="text-danger">*</span></label></div>
+                    <div class="col-12 col-md-9">
+                      <select name="select-extension-file" id="select-extension-file" class="form-control">
+                        <option value="0">Seleccione una extension de archivo</option>
+                        <option value=".jpg">jpg</option>
+                        <option value=".jpeg">jpeg</option>
+                        <option value=".MOV">MOV</option>
+                        <option value=".mp4">mp4</option>
+                      </select>
+                    </div>
+                  </div>
+                  <!-- resolucion ancho de archivo -->
+                  <div class="row form-group">
+                    <div class="col col-md-3">
+                      <label for="text-input" class="form-control-label">
+                        Resolución ancho <span class="text-danger">*</span>
+                      </label>
+                    </div>
+                    <div class="col-12 col-md-9">
+                      <input type="text" id="text-res-ancho" name="text-res-ancho" required class="form-control" />
+                    </div>
+                  </div>
+                  <!-- Numero de arboles -->
+                  <div class="row form-group">
+                    <div class="col col-md-3">
+                      <label for="text-input" class="form-control-label">
+                        Número Árboles <span class="text-danger">*</span>
+                      </label>
+                    </div>
+                    <div class="col-12 col-md-9">
+                      <input type="text" id="text-num-arboles" name="text-num-arboles" required class="form-control" />
+                    </div>
+                  </div>
+                  <!-- Dia de toma de datos -->
+                  <div class="row form-group">
+                    <div class="col col-md-3">
+                      <label for="text-input" class="form-control-label">
+                        Día de toma de datos <span class="text-danger">*</span>
+                      </label>
+                    </div>
+                    <div class="col-12 col-md-9">
+                      <input type="date" id="text-dia-datos" name="text-dia-datos" required class="form-control" />
+                    </div>
+                  </div>
+                  <!-- Dia de toma de datos -->
+                  <!-- <div class="row form-group">
+                      <div class="col col-md-3">
+                        <label for="text-input" class="form-control-label">
+                      Día de toma de datos <span class="text-danger">*</span>
+                      </label>
+                      </div>
+                      <div class="col-12 col-md-9">
+                        <input type="text" id="text-dia-datos" name="text-dia-datos" required class="form-control" />
+                      </div>
+                    </div> -->
+                  <!-- Mesa toma de datos -->
+                  <!-- <div class="row form-group">
+                      <div class="col col-md-3">
+                        <label for="text-input" class="form-control-label">
+                      Mesa toma de datos <span class="text-danger">*</span>
+                      </label>
+                      </div>
+                      <div class="col-12 col-md-9">
+                        <input type="text" id="text-toma-datos" name="text-toma-datos" required class="form-control" />
+                      </div>
+                    </div> -->
+                  <!-- Año -->
+                  <!-- <div class="row form-group">
+                      <div class="col col-md-3">
+                        <label for="text-input" class="form-control-label">
+                      Año <span class="text-danger">*</span>
+                      </label>
+                      </div>
+                      <div class="col-12 col-md-9">
+                        <input type="text" id="text-anho" name="text-anho" required class="form-control" />
+                      </div>
+                    </div> -->
+                  <!-- Tipo de fruta -->
+                  <!-- <div class="row form-group">
+                      <div class="col col-md-3"><label class=" form-control-label">Tipo de fruta</label></div>
+                      <div class="col-12 col>-md-9">
+                          <select name="select-struct-fruit" id="select-struct-fruit" class="form-control">
+                              <option value="0">Seleccione un tipo de fruta</option>
+                              <option value="image">Dardos</option>
+                              <option value="video">Cerezas</option>
+                          </select>
+                      </div>
+                     </div> -->
+                  <!-- nombre_campo,
+            tipo_archivo,
+            extension_archivo,
+            numero_boletin,-> base de datos id
+            resolucion_ancho,
+            numero_arboles,
+            dia_toma_datos,
+            mesa_toma_datos,
+            year,
+            tipo_estructura_fruta-> default por vista, -->
+
+
+                  <div class="row">
+                    <!-- SECCION VIDEO -->
+                    <div class="col-md-4 mb-4">
+                      <div class="form-group">
+                        <label class="mb-3"><i class="ti-video-camera mr-2"></i><strong>Videos o imágenes</strong></label>
+                        <div class="custom-file-upload" onclick="document.getElementById('file1').click();">
+                          <input type="file" id="file1" name="file1" accept=".zip"
+                            onchange="updateFileName(this, 'filename1')">
+                          <div class="file-upload-content">
+                            <div class="file-upload-icon">
+                              <i class="ti-video-camera"></i>
+                            </div>
+                            <div class="file-upload-text">Seleccionar archivo comprimido</div>
+                            <div class="file-upload-hint">Arrastra aquí o haz clic</div>
+                            <div id="filename1" class="file-upload-hint mt-2" style="display: none;"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- SECCION VIDEO -->
+
+                    <!-- SECCION NOMBRES -->
+                    <div class="col-md-4 mb-4">
+                      <div class="form-group">
+                        <label class="mb-3"><i class="ti-clipboard mr-2"></i><strong>Registro</strong></label>
+                        <div class="custom-file-upload" onclick="document.getElementById('file2').click();">
+                          <input type="file" id="file2" name="file2" accept=".csv,.xlsx"
+                            onchange="updateFileName(this, 'filename2')">
+                          <div class="file-upload-content">
+                            <div class="file-upload-icon">
+                              <i class="ti-clipboard"></i>
+                            </div>
+                            <div class="file-upload-text">Seleccionar archivo</div>
+                            <div class="file-upload-hint">Arrastra aquí o haz clic</div>
+                            <div id="filename2" class="file-upload-hint mt-2" style="display: none;"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- SECCION NOMBRES -->
+
+                    <!-- SECCION CONTEO -->
+                    <div class="col-md-4 mb-4">
+                      <div class="form-group">
+                        <label class="mb-3"><i class="ti-bar-chart mr-2"></i><strong>Conteo de referencia</strong></label>
+                        <div class="custom-file-upload" onclick="document.getElementById('file3').click();">
+                          <input type="file" id="file3" name="file3" accept=".csv,.xlsx"
+                            onchange="updateFileName(this, 'filename3')">
+                          <div class="file-upload-content">
+                            <div class="file-upload-icon">
+                              <i class="ti-bar-chart"></i>
+                            </div>
+                            <div class="file-upload-text">Seleccionar archivo</div>
+                            <div class="file-upload-hint">Arrastra aquí o haz clic</div>
+                            <div id="filename3" class="file-upload-hint mt-2" style="display: none;"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- SECCION CONTEO -->
+                    <!-------------------------------->
+                  </div> <!-- FIN ROW -->
+              </div> <!--FIN CARD BODY-->
+
+              <!-- SECCION ENVIAR-REINICIAR-->
+              <div class="card-footer text-center">
+                <button type="submit" class="btn btn-primary btn-lg shadow-sm mx-2" onclick="validateFiles(event)">
+                  <i class="ti-upload mr-2"></i><strong>Enviar Archivos</strong>
+                </button>
+
+                <button type="reset" class="btn btn-outline-danger btn-lg shadow-sm mx-2" onclick="resetFiles()">
+                  <i class="ti-reload mr-2"></i><strong>Reiniciar</strong>
+                </button>
+              </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <!-- .animated -->
+      </div>
+      <!-- .content -->
+
+      <div class="clearfix"></div>
+
+      <!-- MODAL CONFIRMAR SUBIDA-->
+      <div class="modal fade" id="modalSubmit" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" id="staticModalLabel">Antes de continuar</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p id="modalSubmitMessage">
+                Se subirán los archivos seleccionados. ¿Continuar?
+              </p>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Cancelar</button>
+              <button type="button" class="btn btn-primary" onclick="submitFiles()">Confirmar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WARNING PARA ERROR DE ARCHIVOS -->
+      <div class="modal fade" id="modalError" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+          <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+              <h4 class="modal-title" id="errorModalLabel">Archivos faltantes</h4>
+              <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p class="mb-3">Por favor, selecciona los siguientes archivos antes de continuar:</p>
+              <ul id="missingFilesList" class="text-danger">
+              </ul>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-dismiss="modal">Entendido</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {% include 'footer.html' %}
+      <!-- /#right-panel -->
+
+      <!-- Right Panel -->
+    </div>
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@2.2.4/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.4/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-match-height@0.7.2/dist/jquery.matchHeight.min.js"></script>
+    <script src="static/js/main.js"></script>
+    <script src="static/js/budsUpload.js"></script>
+    <script src="static/js/drag.js"></script>
+
+    <script>
+      document.getElementById('select-field').addEventListener('change', function () {
+        const field = this.value;
+        const zoneSelect = document.getElementById('select-zone');
+        zoneSelect.innerHTML = '<option value="">Cargando...</option>';
+
+        if (field != 0) {
+          fetch('/get_zones_budscount', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ field: field })
+          })
+            .then(response => response.json())
+            .then(data => {
+              zoneSelect.innerHTML = '<option value="">Seleccione un cuartel</option>';
+              data.forEach(zone => {
+                const option = document.createElement('option');
+                option.value = zone;
+                option.textContent = "Cuartel " + zone;
+                zoneSelect.appendChild(option);
+              });
+            });
+        } else {
+          zoneSelect.innerHTML = '<option value="">Seleccione un cuartel</option>';
+        }
+      });
+    </script>
+</body>
+
+</html>

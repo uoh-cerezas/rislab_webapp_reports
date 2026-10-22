@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="">
+<!--<![endif]-->
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Gestion de Servicios</title>
+  <meta name="description" content="Ela Admin - HTML5 Admin Template" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <link rel="apple-touch-icon" href="/static/images/FIC_logo_pestana.png" />
+  <link rel="shortcut icon" href="/static/images/FIC_logo_pestana.png" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.0/normalize.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css" />
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/pixeden-stroke-7-icon@1.2.3/pe-icon-7-stroke/dist/pe-icon-7-stroke.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.0/css/flag-icon.min.css" />
+
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/cs-skin-elastic.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <style>
+    .col-lg-6 {
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
+  </style>
+
+</head>
+
+<body>
+  <!-- Left Panel -->
+  {% include 'lateral.html' %}
+  <!-- Left Panel -->
+
+  <!-- Right Panel -->
+
+  <div id="right-panel" class="right-panel">
+    <!-- Header-->
+    {% include 'header.html' %}
+    <!-- /header -->
+    <!-- Header-->
+
+    <div class="breadcrumbs">
+      <div class="breadcrumbs-inner">
+        <div class="row m-0">
+          <div class="col-sm-4">
+            <div class="page-header float-left">
+              <div class="page-title">
+                <h1><strong>Gestión de servicios</strong></h1>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-8">
+            <div class="page-header float-right">
+              <div class="page-title">
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row m-0">
+          <div class="col-12">
+            <div class="parrafo-upload">
+              <p>Aquí encontraras formularios de creacion, modificacion y eliminacion de los servicios y campos disponibles en la plataforma.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="animated fadeIn">
+        <!-- Flash messages -->
+        {% include 'managementMessage.html' %}
+        <div class="row">
+
+
+          <div class="col-lg-6">
+            <!-- Añadir servicio -->
+            <div class="card">
+              <div class="card-header">
+                <strong>Añadir servicio</strong>  <br>Genera una nueva base de datos de servicio a la plataforma.
+              </div>
+              <div class="card-body card-block">
+                <form action="/gestion_servicios" id="addService" method="post" enctype="multipart/form-data" class="form-horizontal" method="POST">
+                  <input type="hidden" name="form_name" value="add_service" required>
+                  <div class="row form-group">
+                    <div class="col col-md-3">
+                      <label class=" form-control-label">
+                        Nombre del servicio <span class="text-danger">*</span>
+                      </label>
+                    </div>
+                    <div class="col-12 col-md-9">
+                      <input type="name" id="name-input" name="name-input" placeholder="Ingrese nombre del servicio..." class="form-control" required>
+                    </div>
+                  </div>
+                  
+                  <div class="row form-group">
+                    <div class="col col-md-3">
+                      <label class=" form-control-label">
+                        Nombre del campo <span class="text-danger">*</span>
+                      </label>
+                    </div>
+                    <div class="col-12 col-md-9">
+                      <input type="name" id="field-input" name="field-input" placeholder="Ingrese nombre del campo..." class="form-control" required>
+                    </div>
+                  </div>
+
+                  <hr>
+
+                  <div class="row form-group">
+                    <div class="col col-md-3">
+                      <label class="form-control-label">Email administrador</label>
+                      <span class="text-danger">*</span>
+                    </div>
+                    <div class="col-12 col-md-9">
+                      <input type="email" id="email-admin-addS" name="email-input-service"
+                        placeholder="Ingrese su email de administrador" class="form-control" required>
+                    </div>
+                  </div>
+
+                  <div class="row form-group">
+                    <div class="col col-md-3">
+                      <label class="form-control-label">Contraseña administrador</label>
+                      <span class="text-danger">*</span>
+                    </div>
+                    <div class="col-12 col-md-9">
+                      <input type="password" id="password-admin-addS" name="password-input-service"
+                        placeholder="Ingrese contraseña de administrador" class="form-control" required>
+                    </div>
+                  </div>
+
+                    <button type="submit" class="btn btn-info">
+                      <i class="fa fa-check"></i>
+                      Confirmar
+                    </button>
+
+                    <p id="error-addS" style="color:red; display:none;"></p>
+                    
+                </form>
+              </div>
+            </div>
+            <!-- Añadir campo -->
+            <div class="card">
+              <div class="card-header">
+                <strong>Crear campo</strong>  <br>Crea un campo en uno de los servicios existentes.
+              </div>
+              <div class="card-body card-block">
+                <form action="/gestion_servicios" id="addField" method="post" enctype="multipart/form-data"
+                  class="form-horizontal">
+                  <input type="hidden" name="form_name" value="add_field" required>
+                    
+                  <div class="row form-group">
+                    <div class="col col-md-3">
+                      <label class=" form-control-label">Seleccione el Servicio</label>
+                      <span class="text-danger">*</span>
+                    </div>
+                    <div class="col-12 col-md-9">
+                      <select name="selectedService" id="selected-service-add" data-placeholder="Servicio" class="standardSelect form-control"
+                        tabindex="1">
+                        <option value="" disabled selected>Seleccione un servicio...</option>
+                        {% for s in all_dbs %}
+                          <option value="{{ s[0] }}">{{ s[1] }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="row form-group">
+                    <div class="col col-md-3">
+                      <label class=" form-control-label">
+                        Identificador del campo <span class="text-danger">*</span>
+                      </label>
+                    </div>
+                    <div class="col-12 col-md-9">
+                      <input type="name" id="field-input-add" name="field-input" placeholder="Ingrese nombre del campo..." class="form-control" required>
+                    </div>
+                  </div>
+
+                  <hr>
+
+                  <div class="row form-group">
+                    <div class="col col-md-3">
+                      <label class="form-control-label">Email administrador</label>
+                      <span class="text-danger">*</span>
+                    </div>
+                    <div class="col-12 col-md-9">
+                      <input type="email" id="email-admin-addF" name="email-input"
+                        placeholder="Ingrese su email de administrador" class="form-control" required>
+                    </div>
+                  </div>
+
+                  <div class="row form-group">
+                    <div class="col col-md-3">
+                      <label class="form-control-label">Contraseña administrador</label>
+                      <span class="text-danger">*</span>
+                    </div>
+                    <div class="col-12 col-md-9">
+                      <input type="password" id="password-admin-addF" name="password-input"
+                        placeholder="Ingrese contraseña de administrador" class="form-control" required>
+                    </div>
+                  </div>
+
+                  <button type="submit" class="btn btn-info">
+                    <i class="fa fa-check"></i>
+                    Confirmar
+                  </button>
+
+                  <p id="error-addF" style="color:red; display:none;"></p>
+
+                </form>
+              </div>
+            </div>
+
+
+            <!-- Añadir campos -->
+            <div class="card">
+              <div class="card-header">
+                <strong>Asignar campo a usuario</strong>  <br>Asigna un campo a un usuario existente de acuerdo a sus servicios disponibles.
+              </div>
+              <div class="card-body card-block">
+                <form action="/gestion_servicios" id="add_user_field" method="post" enctype="multipart/form-data"
+                  class="form-horizontal">
+                  <input type="hidden" name="form_name" value="add_user_field" required>
+
+                  <!-- Seleccion de usuario -->
+                  <div class="row form-group">
+                    <div class="col col-md-3">
+                      <label class=" form-control-label">Seleccione el usuario</label>
+                      <span class="text-danger">*</span>
+                    </div>
+                    <div class="col-12 col-md-9">
+                      <select name="selected-user" id="selected-user" data-placeholder="Email" class="standardSelect form-control"
+                        tabindex="1">
+                        <option value="" disabled selected>Seleccione un usuario...</option>
+                          {% for u in all_users %}
+                        <option value="{{ u }}">{{ u }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+
+                  <!-- Seleccion de servicio -->
+                  <div class="row form-group">
+                    <div class="col col-md-3">
+                      <label class=" form-control-label">Seleccione el servicio del usuario</label>
+                      <span class="text-danger">*</span>
+                    </div>
+                    <div class="col-12 col-md-9">
+                      <select name="selected-service" id="selected-service" data-placeholder="Servicio" class="form-control"
+                        tabindex="1">
+                        <option value="" disabled selected>Seleccione el servicio del usuario...</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <!-- Seleccion de campo -->
+                  <div class="row form-group">
+                    <div class="col col-md-3">
+                      <label class=" form-control-label">Seleccione el campo a agregar</label>
+                      <span class="text-danger">*</span>
+                    </div>
+                    <div class="col-12 col-md-9">
+                      <select name="selected-field" id="selected-field" data-placeholder="Campo" class=" form-control"
+                        tabindex="1">
+                        <option value="" disabled selected>Seleccione un campo del servicio...</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <!-- Ingresar numero de cuartel -->
+                  <div class="row form-group">
+                    <div class="col col-md-3">
+                      <label class="form-control-label">Numero de cuartel</label>
+                      <span class="text-danger">*</span>
+                    </div>
+                    <div class="col-12 col-md-9">
+                      <input type="number" id="quarter-input" name="quarter-input" min="0" step="1"
+                        placeholder="Numero de cuartel..." class="form-control" required>
+                    </div>
+                  </div>
+                  
+                  <hr>
+
+                  <div class="row form-group">
+                    <div class="col col-md-3">
+                      <label class="form-control-label">Email administrador</label>
+                      <span class="text-danger">*</span>
+                    </div>
+                    <div class="col-12 col-md-9">
+                      <input type="email" id="email-admin-Fields" name="email-input"
+                        placeholder="Ingrese su email de administrador" class="form-control" required>
+                    </div>
+                  </div>
+
+                  <div class="row form-group">
+                    <div class="col col-md-3">
+                      <label class="form-control-label">Contraseña administrador</label>
+                      <span class="text-danger">*</span>
+                    </div>
+                    <div class="col-12 col-md-9">
+                      <input type="password" id="password-admin-Fields" name="password-input"
+                        placeholder="Ingrese contraseña de administrador" class="form-control" required>
+                    </div>
+                  </div>
+
+                  <button type="submit" class="btn btn-info">
+                    <i class="fa fa-check"></i>
+                    Confirmar
+                  </button>
+
+                  <p id="error-Fields" style="color:red; display:none;"></p>
+      
+                </form>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <!-- .animated -->
+    </div>
+    <!-- .content -->
+
+
+    {% include 'footer.html' %}
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@2.2.4/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.4/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery-match-height@0.7.2/dist/jquery.matchHeight.min.js"></script>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/contactForm.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/userManagement.js') }}"></script>
+
+  <script src="{{ url_for('static', filename='js/miCheckBox.js') }}"></script>
+
+
+  <!-- Dropdown busqueda Modificar usuario -->
+  <!-- Choices.js CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+  <!-- Choices.js JS -->
+  <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+
+<!-- Dropdown with searchbar -->
+  <script src="../static/js/myDropdown.js"></script>
+
+<!-- Display available services after selecting the user -->
+    <script>
+      document.getElementById('selected-user').addEventListener('change', function () {
+          const user = this.value;
+          const serviceSelect = document.getElementById('selected-service');
+          serviceSelect.innerHTML = '<option value="">Cargando...</option>';
+          if (user != 0) {
+              fetch('/get_user_services', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ user: user })
+              })
+              .then(response => response.json())
+              .then(data => {
+                  serviceSelect.innerHTML = '<option value="" disabled selected>Seleccione un servicio</option>';
+                  for(const service of data) {
+                      const option = document.createElement('option');
+                      option.value = service[1];
+                      option.textContent = service[0];
+                      serviceSelect.appendChild(option);
+                  };
+              });
+          } else {
+              serviceSelect.innerHTML = '<option value="">Seleccione un servicio</option>';
+          }
+      });
+    </script>
+<!-- Display available fields after selecting the service -->
+    
+    <script>
+      document.getElementById('selected-service').addEventListener('change', function () {
+          const service = this.value;
+          const fieldSelect = document.getElementById('selected-field');
+          fieldSelect.innerHTML = '<option value="">Cargando...</option>';
+          if (service != 0) {
+              fetch('/get_service_fields', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ service: service })
+              })
+              .then(response => response.json())
+              .then(data => {
+                  fieldSelect.innerHTML = '<option value="" disabled selected>Seleccione un campo</option>';
+                  for(const field of data) {
+                      const option = document.createElement('option');
+                      option.value = field[1];
+                      option.textContent = field[0];
+                      fieldSelect.appendChild(option);
+                  };
+              });
+          } else {
+              fieldSelect.innerHTML = '<option value="">Seleccione un servicio</option>';
+          }
+      });
+    </script>
+
+    <!-- <script type="module">
+        import { addDropdownValidation } from "../static/js/checkDropdownService.js"
+
+        addDropdownValidation("selected-user", "usuario", "error-addS");
+        addDropdownValidation("selected-service", "servicio", "error-addF");
+        addDropdownValidation("selected-field", "campo", "error-Fields");
+        
+    </script> -->
+
+    <script type="module">
+        import { checkDuplicated } from "../static/js/checkFormAdmin.js"
+        checkDuplicated("addService", "name-input", "error-addS", "servicio", "email-admin-addS", "password-admin-addS" );
+    </script>
+
+    <!-- <script type="module">
+        import { checkFormAdmin } from "../static/js/checkFormAdmin.js"
+
+        // checkFormAdmin("addService", "email-admin-addS", "password-admin-addS", "error-addS");
+        checkFormAdmin("addField", "email-admin-addF", "password-admin-addF", "error-addF");
+        checkFormAdmin("add_user_field", "email-admin-Fields", "password-admin-Fields", "error-Fields");
+        
+    </script> -->
+
+    <script type="module">
+        import { addDropdownValidation, addDropdownValidationConsecutive, adminValidation, checkDuplicatedFieldDropdown, checkDuplicatedQuarterDropdown } from "../static/js/checkDropdownService.js";
+
+        // checkFormAdmin("addService", "email-admin-addS", "password-admin-addS", "error-addS");
+        addDropdownValidation("selected-user","error-Fields","usuario",(form, errorBlock) => 
+        {
+          addDropdownValidationConsecutive(form, errorBlock, "selected-service", "servicio", (form, errorBlock) => 
+          {
+            addDropdownValidationConsecutive(form, errorBlock, "selected-field", "campo", (form, errorBlock) =>
+            {
+              checkDuplicatedQuarterDropdown(form,errorBlock,"selected-user","selected-service", "selected-field", "quarter-input" , (form, errorBlock) =>
+              {
+                adminValidation(form,errorBlock,"email-admin-Fields","password-admin-Fields");
+              });
+            });
+          });
+        });
+
+        addDropdownValidation("selected-service-add","error-addF","servicio",(form, errorBlock) => 
+        {
+          checkDuplicatedFieldDropdown(form, errorBlock, "selected-service-add", "field-input-add", (form, errorBlock) => 
+          {
+            adminValidation(form,errorBlock,"email-admin-addF","password-admin-addF");
+          });
+        });
+        
+
+        
+        
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,14 @@
+[project]
+authors = ["Nicolás Araya <63214589+NicolasAraya932@users.noreply.github.com>"]
+channels = ["conda-forge"]
+description = "Add a short description here"
+name = "dashboard"
+platforms = ["win-64"]
+version = "0.1.0"
+
+[tasks]
+install-requirements = { cmd = ["pip", "install", "-r", "requirements.txt"] }
+
+[dependencies]
+python = "3.10.*"
+pip = ">=25.1.1,<26"

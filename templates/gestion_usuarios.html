@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="">
+<!--<![endif]-->
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Gestion de Usuarios</title>
+  <meta name="description" content="Ela Admin - HTML5 Admin Template" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <link rel="apple-touch-icon" href="/static/images/FIC_logo_pestana.png" />
+  <link rel="shortcut icon" href="/static/images/FIC_logo_pestana.png" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.0/normalize.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css" />
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/pixeden-stroke-7-icon@1.2.3/pe-icon-7-stroke/dist/pe-icon-7-stroke.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.0/css/flag-icon.min.css" />
+
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/cs-skin-elastic.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <style>
+    .col-lg-6 {
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
+  </style>
+
+  <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/html5shiv/3.7.3/html5shiv.min.js"></script> -->
+</head>
+
+<body>
+  <!-- Left Panel -->
+  {% include 'lateral.html' %}
+  <!-- Left Panel -->
+
+  <!-- Right Panel -->
+
+  <div id="right-panel" class="right-panel">
+    <!-- Header-->
+    {% include 'header.html' %}
+    <!-- /header -->
+    <!-- Header-->
+
+    <div class="breadcrumbs">
+      <div class="breadcrumbs-inner">
+        <div class="row m-0">
+          <div class="col-sm-4">
+            <div class="page-header float-left">
+              <div class="page-title">
+                <h1><strong>Gestión de usuarios</strong></h1>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-8">
+            <div class="page-header float-right">
+              <div class="page-title">
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row m-0">
+          <div class="col-12">
+            <div class="parrafo-upload">
+              <p>Aquí encontraras formularios de creacion, modificacion y eliminacion de usuarios de la plataforma.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="animated fadeIn">
+        <!-- Flash messages -->
+        {% include 'managementMessage.html' %}
+        <div class="row">
+
+          <!-- Añadir Usuario -->
+          <div class="col-lg-6">
+           
+            <!-- Modificar Usuario -->
+            <div class="card">
+              <div class="card-header">
+                <strong>Modificar usuario</strong>  <br>Modifica un usuario ya ingresado a la plataforma
+              </div>
+              <div class="card-body card-block">
+                <form action="/gestion_usuarios" id="modUser" method="post" enctype="multipart/form-data"
+                  class="form-horizontal">
+                  <input type="hidden" name="form_name" value="mod_user" required>
+                    
+                  <div class="row form-group">
+                    <div class="col col-md-3">
+                      <label class=" form-control-label">Seleccione el Email del usuario</label>
+                      <span class="text-danger">*</span>
+                    </div>
+                    <div class="col-12 col-md-9">
+                      <select name="selectedUser" id="selectedUser-mod" data-placeholder="Email" class="standardSelect form-control"
+                        tabindex="1">
+                        <option value="" disabled selected>Seleccione un usuario...</option>
+                        {% for u in all_users %}
+                          <option value="{{ u }}">{{ u }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+                  
+                  <div class="row form-group">
+                    <div class="col col-md-3">
+                      <label class=" form-control-label">Servicios</label>
+                    </div>
+                    <div class="col col-md-9">
+                      
+                      <div class="form-check" id="services-form-mod">
+                        {% for service in all_services %}
+                          <div class="checkbox">
+                            <label class="form-check-label ">
+                              <input type="checkbox" id={{"addService"~service[0]}} name="modService" value="{{service[0]}}" class="form-check-input" > {{ service[1] }}
+                            </label>
+                          </div>
+                        {% endfor %}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row form-group">
+                    <div class="col col-md-3">
+                      <label class=" form-control-label">Rol <span class="text-danger">*</span></label>
+                    </div>
+                    <div class="col col-md-9">
+                      <div class="form-check" id="role-form-mod">
+                        <div class="radio">
+                          <label class="form-check-label ">
+                            <input type="radio" id="addRolAdmin" name="modRole" value="0" class="form-check-input" required> Administrador
+                          </label>
+                        </div>
+                        <div class="radio">
+                          <label class="form-check-label ">
+                            <input type="radio" id="addRolBen" name="modRole" value="1" class="form-check-input" required> Beneficiario
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <hr>
+
+                  <div class="row form-group">
+                    <div class="col col-md-3">
+                      <label class="form-control-label">Email administrador</label>
+                      <span class="text-danger">*</span>
+                    </div>
+                    <div class="col-12 col-md-9">
+                      <input type="email" id="email-admin-mod" name="email-input-mod"
+                        placeholder="Ingrese su email de administrador" class="form-control" required>
+                    </div>
+                  </div>
+
+                  <div class="row form-group">
+                    <div class="col col-md-3">
+                      <label class="form-control-label">Contraseña administrador</label>
+                      <span class="text-danger">*</span>
+                    </div>
+                    <div class="col-12 col-md-9">
+                      <input type="password" id="password-admin-mod" name="password-input-mod"
+                        placeholder="Ingrese contraseña de administrador" class="form-control" required>
+                    </div>
+                  </div>
+
+                  <button type="submit" class="btn btn-info">
+                    <i class="fa fa-check"></i>
+                    Confirmar
+                  </button>
+
+                  <p id="error-modUser" style="color:red; display:none;"></p>
+                  
+                </form>
+              </div>
+            </div>
+            <!-- Eliminar Usuario -->
+            <div class="card">
+              <div class="card-header">
+                <strong>Eliminar usuario</strong>  <br>Elimina un usuario de la plataforma
+              </div>
+              <div class="card-body card-block">
+                <form action="/gestion_usuarios" id="delUser" method="post" enctype="multipart/form-data"
+                  class="form-horizontal">
+                  <input type="hidden" name="form_name" value="del_user" required>
+
+                  <div class="row form-group">
+                    <div class="col col-md-3">
+                      <label class=" form-control-label">Seleccione el usuario a eliminar</label>
+                      <span class="text-danger">*</span>
+                    </div>
+                    <div class="col-12 col-md-9">
+                      <select name="selectedUser-del" id="selectedUser-del" data-placeholder="Email" class="standardSelect form-control"
+                        tabindex="1">
+                        <option value="" disabled selected>Seleccione un usuario...</option>
+                        {% for u in all_users %}
+                        <option value="{{ u }}">{{ u }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+
+                  <hr>
+
+                  <div class="row form-group">
+                    <div class="col col-md-3">
+                      <label class="form-control-label">Email administrador</label>
+                      <span class="text-danger">*</span>
+                    </div>
+                    <div class="col-12 col-md-9">
+                      <input type="email" id="email-admin-del" name="email-input"
+                        placeholder="Ingrese su email de administrador" class="form-control" required>
+                    </div>
+                  </div>
+
+                  <div class="row form-group">
+                    <div class="col col-md-3">
+                      <label class="form-control-label">Contraseña administrador</label>
+                      <span class="text-danger">*</span>
+                    </div>
+                    <div class="col-12 col-md-9">
+                      <input type="password" id="password-admin-del" name="password-input"
+                        placeholder="Ingrese contraseña de administrador" class="form-control" required>
+                    </div>
+                  </div>
+
+                  <button type="submit" class="btn btn-danger">
+                    <i class="fa fa-trash-o"></i>
+                    Confirmar
+                  </button>
+
+                  <p id="error-delUser" style="color:red; display:none;"></p>
+
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- .animated -->
+    </div>
+    <!-- .content -->
+
+
+    {% include 'footer.html' %}
+  </div>
+  <!-- /#right-panel -->
+
+  <!-- Right Panel -->
+
+  <!-- MODAL CONFIRMAR ENVÍO -->
+  <div class="modal fade" id="modalSubmit" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="staticModalLabel">Antes de continuar</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p id="modalSubmitMessage">
+            Se enviará tu mensaje de contacto. ¿Continuar?
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" onclick="submitContact()">Confirmar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL ERROR CAMPOS FALTANTES -->
+  <div class="modal fade" id="modalError" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+      <div class="modal-content">
+        <div class="modal-header bg-danger text-white">
+          <h4 class="modal-title" id="errorModalLabel">Campos obligatorios faltantes</h4>
+          <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p class="mb-3">Por favor, completa los siguientes campos antes de continuar:</p>
+          <ul id="missingFieldsList" class="text-danger">
+          </ul>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Entendido</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@2.2.4/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.4/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery-match-height@0.7.2/dist/jquery.matchHeight.min.js"></script>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/contactForm.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/userManagement.js') }}"></script>
+
+  <script src="{{ url_for('static', filename='js/miCheckBox.js') }}"></script>
+
+
+  <!-- Dropdown busqueda Modificar usuario -->
+  <!-- Choices.js CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+  <!-- Choices.js JS -->
+  <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var selects = document.querySelectorAll(".standardSelect");
+
+      selects.forEach(function (select) {
+        new Choices(select, {
+          searchEnabled: true,
+          noResultsText: "Oops, nothing found!",
+          shouldSort: false,
+        });
+
+        // Agregar un listener para el cambio de selección
+        select.addEventListener('change', function() {
+          // Comprobar si la primera opción está seleccionada (indice 0)
+          if (select.selectedIndex === 0) {
+            select.setCustomValidity("Por favor, selecciona una opción diferente de la primera.");
+          } else {
+            select.setCustomValidity(""); // Limpiar el mensaje de error
+          }
+        });
+
+        // Asegurarse de que el select no tenga la opción predeterminada al enviar el formulario
+        // select.form.addEventListener('submit', function(event) {
+        //   if (select.selectedIndex === 0) {
+        //     event.preventDefault(); // Evitar que el formulario se envíe
+        //     alert("Por favor, selecciona una opción diferente de la primera.");
+        //   }
+        // });
+      });
+    });
+  </script>
+
+
+    </script>
+
+
+<!-- Display available services after selecting the user -->
+<script>
+document.getElementById('selectedUser-mod').addEventListener('change', function () {
+    const user = this.value;
+    const servicesForm = document.getElementById('services-form-mod');
+
+    const checkboxes = servicesForm.querySelectorAll('input[type="checkbox"]');
+
+    if (user != 0) {
+        fetch('/get_user_services', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ user: user })
+        })
+        .then(response => response.json())
+        .then(data => {
+
+            checkboxes.forEach(cb => cb.checked = false);
+
+            data.forEach(item => {
+                const serviceId = item[1];
+                const checkbox = servicesForm.querySelector(`input[value="${serviceId}"]`);
+                if (checkbox) checkbox.checked = true;
+            });
+        });
+    } else {
+        checkboxes.forEach(cb => cb.checked = false);
+    }
+});
+</script>
+
+<!-- Display user role after selecting the user -->
+<script>
+document.getElementById('selectedUser-mod').addEventListener('change', function () {
+    const user = this.value;
+    const rolesForm = document.getElementById('role-form-mod');
+
+    const radios = rolesForm.querySelectorAll('input[type="radio"]');
+
+    if (user != 0) {
+        fetch('/get_user_role', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ user: user })
+        })
+        .then(response => response.json())
+        .then(userRole => {
+
+            userRole = Number(userRole);
+
+            radios.forEach(r => r.checked = false);
+
+            const radio = rolesForm.querySelector(`input[type="radio"][value="${userRole}"]`);
+            if (radio) radio.checked = true;
+        });
+
+    } else {
+        radios.forEach(r => r.checked = false);
+    }
+});
+</script>
+
+<!-- Prevent to send the form if the admin credentials -->
+ <script>
+  
+ </script>
+
+  <script type="module">
+      import { checkDuplicated, checkDuplicatedUser } from "../static/js/checkFormAdmin.js"
+      checkDuplicatedUser("addUser", "email-input", "error-addUser", "correo electrónico", "email-admin-add", "password-admin-add", "password-input");
+  </script>
+<!-- 
+  <script type="module">
+      import { checkFormAdmin } from "../static/js/checkFormAdmin.js"
+      checkFormAdmin("modUser", "email-admin-mod", "password-admin-mod", "error-modUser");
+      checkFormAdmin("delUser", "email-admin-del", "password-admin-del", "error-delUser");
+  </script>
+ -->
+
+  <!-- <script type="module">
+      import { addDropdownValidation, addDropdownValidationPassword } from "../static/js/checkDropdownService.js"
+
+      // export function addDropdownValidationPassword(selectId, errorMsgId, dropdownType, formId, emailId, passwordId)
+      addDropdownValidationPassword("selectedUser-mod", "error-modUser", "usuario", "modUser", "email-admin-mod", "password-admin-mod");
+      addDropdownValidationPassword("selectedUser-del", "error-delUser", "usuario", "delUser", "email-admin-del", "password-admin-del");
+      
+  </script> -->
+
+<script type="module">
+    import { addDropdownValidation, adminValidation } from "../static/js/checkDropdownService.js";
+    // addDropdownValidation(selectId, errorMsgId, dropdownType, onValid)
+    // adminValidation(form,errorMsgBlock,emailId,passwordId)
+    addDropdownValidation("selectedUser-mod","error-modUser","usuario",(form, errorBlock) => {
+      adminValidation(form,errorBlock,"email-admin-mod","password-admin-mod");
+      });
+    addDropdownValidation("selectedUser-del","error-delUser","usuario",(form, errorBlock) => {
+      adminValidation(form,errorBlock,"email-admin-del","password-admin-del");
+      });
+</script>
+
+
+
+
+
+  <!-- Script de depuración mejorado (output en consola navegador (para ver si se cargaron bien los paquetes))
+    <script>
+      // Verificar si jQuery se cargó correctamente
+      setTimeout(function() {
+        console.log("=== DIAGNÓSTICO ===");
+        console.log("jQuery disponible:", typeof $ !== 'undefined');
+        console.log("Bootstrap disponible:", typeof bootstrap !== 'undefined');
+        console.log("validateContact disponible:", typeof validateContact !== 'undefined');
+        console.log("Elemento modalSubmit existe:", document.getElementById('modalSubmit') !== null);
+        console.log("Elemento modalError existe:", document.getElementById('modalError') !== null);
+        
+        if (typeof $ === 'undefined') {
+          console.error("❌ jQuery no se cargó correctamente");
+        } else {
+          console.log("✅ jQuery cargado correctamente");
+        }
+      }, 100);
+      
+      // Función de test simple sin jQuery
+      window.testModal = function() {
+        console.log("🔧 Test modal ejecutándose");
+        const modal = document.getElementById('modalSubmit');
+        if (modal) {
+          modal.style.display = 'block';
+          modal.classList.add('show');
+          document.body.classList.add('modal-open');
+        } else {
+          console.error("Modal no encontrado");
+        }
+      };
+    </script> -->
+</body>
+
+</html>

@@ -1,0 +1,632 @@
+* {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+                    }
+
+        body {
+            margin: 10px;
+            padding: 0;
+            min-height: 100dvh;
+            background-color: #ffffff;
+            box-shadow: #000000;
+        }
+
+        main{
+            display: flex;
+            justify-content: center;
+            padding: 10px;
+        }
+
+        /* Contenedor principal */
+        .reportContainer {
+            margin: 0 auto;
+            min-height: calc(100vh - 20px);
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        /* Header */
+        .headerContainer {
+            width: 100%;
+            margin-bottom: 20px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 25px;
+        }
+
+        .headerContainer p {
+            margin-left: 50px;
+            margin-right: 50px;
+            text-align: center;
+            font-size: clamp(16px, 4vw, 18px);
+            color: #000000;
+            line-height: 1.5;
+        }
+
+        /* Botones */
+        #myReports, #newReport {
+            border-radius: 25px;
+            padding: 7px;
+            width: 100%;
+            max-width: 200px;
+            background-color: #ffffff;
+            border: #088cff 1.2px solid;
+            margin: 15px auto 0;
+            color: rgb(0, 123, 255);
+            font-weight: bold;
+            font-size: clamp(14px, 3vw, 16px);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        #myReports:hover, #newReport:hover {
+            transform: scale(1.08);
+            box-shadow: 3px 4px 6px rgba(0,0,0,0.3);
+        }
+
+        /* Sección de frames */
+        .frames-section {
+            margin-top: 40px;
+            width: 100%;
+        }
+
+        .frames-section h3 {
+            text-align: center;
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            color: #000000;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .Cerezas {
+            margin-top: 70px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .Cerezas h2{
+            margin: 40px;
+        }
+
+        .Images{
+            display: flex;
+            flex-direction: row;
+            row-gap: 10px;
+            column-gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        #cerezaHome {
+            width: clamp(200px, 350px, 400px);
+            height: auto;
+            max-height: 230px;
+            border-radius: 20px;
+            object-fit: cover;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        #cerezaHome:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Clase para contenido solo de lectores de pantalla */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* Enlaces */
+        a {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            width: 100%;
+        }
+
+        .Title-Content{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            margin-right: 20px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .Head-routh p{
+            text-align: left;
+            margin-top: 30px;
+            color: gray;
+        }
+
+        .Title-Content li{
+            text-decoration: none;
+            list-style: none;
+        }
+
+        .reportesCherryCount, 
+        .GenNuevoReporte{
+            margin-top: 50px;
+            background-color: #0d619d;
+            width: clamp(200px, 480px, 600px);
+            height: clamp(100px, 190px, 225px);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 30px;
+            background-size: 200px;
+            background-repeat: no-repeat;
+            background-position: right center;
+        }
+
+        .reportesCherryCount{
+            background-image: url('../images/5370091_berry_cherry_cooking_food_gastronomy_icon.svg');
+        }
+
+        .GenNuevoReporte{
+            background-image: url('../images/4308143_check_checklist_file_list_page_icon.svg');
+        }
+
+        .reportesCherryCount #irReporte, .GenNuevoReporte #NuevoReporte{
+            padding: 2px;
+            margin: 0 auto;
+            border-radius: 5px;
+            background-color: #1273B9;
+            border-color: #ffffff;
+            border-width: 5px;
+            display: flex;
+            flex-direction: row;
+            transition: all 0.3s ease;
+        }
+
+        .reportesCherryCount #irReporte a, .GenNuevoReporte #NuevoReporte a{
+            text-decoration: none;
+            color: white;
+            padding-left: 8px;
+            padding-right: 8px;
+        }
+
+        .reportesCherryCount #irReporte:hover, .GenNuevoReporte #NuevoReporte:hover{
+            background-color: #1883d0;
+            color: #ffffff;
+            transform: translateX(5px);
+        }
+
+        .reportesCherryCount h2, .GenNuevoReporte h2, p{
+            text-align: center;
+            color: white;
+        }
+
+        .Hooks{
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            column-gap: 60px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .Reportes{
+            position: relative;
+            z-index: 1;
+        }
+
+        .site-footer {
+         
+            max-width: 95%;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .Logos {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .Logos img {
+            max-width: clamp(250px, 50vw, 700px);
+            height: auto;
+            max-height: clamp(80px, 15vw, 115px);
+            object-fit: contain;
+        }
+
+        .financiado {
+            display: flex;
+            flex-direction: column;
+            gap: clamp(5px, 1vw, 10px);
+            padding: clamp(5px, 2vw, 10px);
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .financiado p {
+            margin: 0;
+            font-size: clamp(0.625rem, 1.5vw, 0.875rem);
+            line-height: 1.4;
+            color: #4a5568;
+            text-align: left;
+        }
+
+        /* Tablets */
+        @media (max-width: 992px) {
+            .site-footer {
+                max-width: 95%;
+                margin: 15px auto;
+            }
+
+            .Logos {
+                gap: 20px;
+            }
+
+            .Logos img {
+                max-width: 400px;
+                max-height: 100px;
+            }
+
+            .financiado {
+                min-width: 180px;
+            }
+
+            .financiado p {
+                font-size: clamp(0.688rem, 2vw, 0.813rem);
+            }
+
+            .reportesCherryCount, 
+            .GenNuevoReporte{
+                width: clamp(180px, 45vw, 500px);
+                height: clamp(90px, 170px, 200px);
+                padding: 25px;
+            }
+
+            .Hooks{
+                column-gap: 40px;
+            }
+
+            .Title-Content{
+                margin-right: 15px;
+            }
+
+            .headerContainer p {
+                margin-left: 30px;
+                margin-right: 30px;
+            }
+        }
+
+        /* Tablets pequeñas */
+        @media (max-width: 768px) {
+            body {
+                margin: 5px;
+            }
+
+            .reportContainer {
+                padding: 15px;
+                border-radius: 15px;
+            }
+
+            .headerContainer {
+                padding: 15px;
+            }
+
+            .headerContainer p {
+                margin-left: 20px;
+                margin-right: 20px;
+                font-size: clamp(14px, 3vw, 16px);
+            }
+
+            .site-footer {
+                padding: 15px;
+                margin: 10px;
+            }
+
+            .Logos {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+
+            .Logos img {
+                max-width: 300px;
+                max-height: 80px;
+            }
+
+            .financiado {
+                width: 100%;
+                text-align: center;
+                padding: 10px 5px;
+            }
+
+            .financiado p {
+                font-size: 0.75rem;
+                text-align: center;
+            }
+
+            .reportesCherryCount, 
+            .GenNuevoReporte{
+                width: clamp(150px, 40vw, 450px);
+                height: clamp(80px, 150px, 180px);
+                padding: 20px;
+                background-size: 150px;
+            }
+
+            .Hooks{
+                column-gap: 30px;
+                gap: 15px;
+            }
+
+            .Title-Content{
+                flex-direction: column;
+                margin-right: 0;
+                gap: 15px;
+            }
+
+            .Head-routh p{
+                margin-top: 15px;
+            }
+
+            .Cerezas {
+                margin-top: 50px;
+            }
+
+            .Cerezas h2{
+                margin: 25px;
+                font-size: clamp(1.25rem, 3vw, 1.5rem);
+            }
+
+            #cerezaHome {
+                width: clamp(150px, 85vw, 350px);
+                max-height: 200px;
+            }
+        }
+
+        /* Móviles */
+        @media (max-width: 576px) {
+            body {
+                margin: 2px;
+            }
+
+            .reportContainer {
+                padding: 10px;
+                border-radius: 10px;
+            }
+
+            .headerContainer {
+                padding: 12px;
+                margin-bottom: 15px;
+            }
+
+            .headerContainer p {
+                margin-left: 10px;
+                margin-right: 10px;
+                font-size: clamp(13px, 3vw, 15px);
+            }
+
+            .frames-section {
+                margin-top: 30px;
+            }
+
+            .frames-section h3 {
+                font-size: clamp(1.25rem, 3vw, 1.75rem);
+                margin-bottom: 15px;
+            }
+
+            .reportesCherryCount, 
+            .GenNuevoReporte{
+                width: clamp(130px, 90vw, 400px);
+                height: clamp(70px, 140px, 160px);
+                padding: 15px;
+                background-size: 120px;
+                margin-top: 30px;
+            }
+
+            .reportesCherryCount h2, .GenNuevoReporte h2{
+                font-size: clamp(1rem, 2.5vw, 1.25rem);
+                margin-bottom: 8px;
+            }
+
+            .reportesCherryCount #irReporte, .GenNuevoReporte #NuevoReporte{
+                padding: 5px 10px;
+                font-size: clamp(12px, 2vw, 14px);
+            }
+
+            .reportesCherryCount #irReporte a, .GenNuevoReporte #NuevoReporte a{
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+
+            .Hooks{
+                flex-direction: column;
+                column-gap: 0;
+                gap: 15px;
+                align-items: stretch;
+            }
+
+            .Reportes{
+                width: 100%;
+            }
+
+            .reportesCherryCount, 
+            .GenNuevoReporte{
+                width: 100%;
+            }
+
+            .Title-Content{
+                flex-direction: column;
+                gap: 10px;
+                margin-right: 0;
+            }
+
+            .Title-Content li{
+                padding: 0;
+            }
+
+            .Head-routh p{
+                margin-top: 10px;
+                font-size: clamp(12px, 2vw, 14px);
+            }
+
+            .Cerezas {
+                margin-top: 40px;
+            }
+
+            .Cerezas h2{
+                margin: 15px;
+                font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+            }
+
+            .Images{
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+
+            #cerezaHome {
+                width: clamp(120px, 90vw, 300px);
+                max-height: 180px;
+                border-radius: 15px;
+            }
+
+            .site-footer {
+                border-radius: 15px;
+                padding: 12px;
+                margin: 8px;
+            }
+
+            .Logos {
+                gap: 12px;
+            }
+
+            .Logos img {
+                max-width: 220px;
+                max-height: 70px;
+            }
+
+            .financiado {
+                padding: 8px 5px;
+            }
+
+            .financiado p {
+                font-size: 0.688rem;
+                line-height: 1.3;
+            }
+
+            #myReports, #newReport {
+                padding: 8px;
+                font-size: clamp(12px, 2.5vw, 14px);
+                max-width: 180px;
+            }
+        }
+
+        /* Móviles pequeños */
+        @media (max-width: 400px) {
+            .site-footer {
+                padding: 10px;
+                margin: 5px;
+            }
+
+            .Logos img {
+                max-width: 180px;
+                max-height: 60px;
+            }
+
+            .financiado p {
+                font-size: 0.625rem;
+            }
+
+            .reportesCherryCount, 
+            .GenNuevoReporte{
+                width: 100%;
+                height: clamp(60px, 130px, 150px);
+                padding: 12px;
+                background-size: 100px;
+            }
+
+            .reportesCherryCount h2, .GenNuevoReporte h2{
+                font-size: clamp(0.9rem, 2vw, 1.1rem);
+                margin-bottom: 5px;
+            }
+
+            .reportesCherryCount #irReporte, .GenNuevoReporte #NuevoReporte{
+                padding: 4px 8px;
+                font-size: 11px;
+                border-width: 3px;
+            }
+
+            #myReports, #newReport {
+                padding: 6px;
+                font-size: 12px;
+                max-width: 160px;
+            }
+
+            .Title-Content{
+                gap: 8px;
+            }
+
+            .Head-routh p{
+                font-size: 12px;
+            }
+
+            .Cerezas h2{
+                margin: 10px;
+                font-size: 1rem;
+                width: 50px;
+
+            }
+
+            #cerezaHome {
+                width: 150px;
+                max-height: 150px;
+            }
+        }
+
+        /* Landscape en móviles */
+        @media (max-height: 600px) and (orientation: landscape) {
+            .site-footer {
+                margin: 5px auto;
+                padding: 8px;
+            }
+
+            .Logos {
+                flex-direction: row;
+                gap: 15px;
+            }
+
+            .Logos img {
+                max-height: 50px;
+            }
+
+            .financiado p {
+                font-size: 0.625rem;
+            }
+
+            .reportesCherryCount, 
+            .GenNuevoReporte{
+                height: clamp(60px, 80vh, 120px);
+                background-size: 100px;
+            }
+
+            .Hooks{
+                gap: 10px;
+            }
+        }

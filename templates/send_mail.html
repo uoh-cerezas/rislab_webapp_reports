@@ -1,0 +1,57 @@
+
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Correo Enviado</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      text-align: center;
+      padding-top: 80px;
+    }
+    .box {
+      background: #fff;
+      padding: 40px;
+      margin: 0 auto;
+      width: 380px;
+      border-radius: 8px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.1);
+    }
+    h1 {
+      margin-bottom: 10px;
+      color: #2e7d32;
+    }
+    p {
+      margin: 0;
+      color: #444;
+    }
+    a {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 18px;
+      background: #2e7d32;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+    a:hover {
+      background: #27662a;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1>Correo enviado</h1>
+    <p>Tu mensaje ha sido enviado correctamente.</p>
+    <a href= "{{url_for('contacto')}}">Volver al formulario</a>
+  </div>
+</body>
+</html>
+
+
+{% endblock %}
