@@ -13,6 +13,8 @@ from flask import (
 )
 from config import config
 import os
+import io
+import zipfile
 from functools import wraps
 from flask_bcrypt import Bcrypt
 from werkzeug.utils import secure_filename
@@ -25,7 +27,6 @@ import random
 
 # import smtplib
 
-# import zipfile
 # from email.message import EmailMessage
 import pandas as pd
 import numpy as np
@@ -1307,6 +1308,7 @@ def reportes_chillhours():
             }
         )
         report["download_url"] = url_for("download_generated_report", token=report["token"])
+        report["view_url"] = url_for("view_generated_report", token=report["token"])
         field_data.append(report)
     if session["role"] == 0:
         return render_template(
@@ -2744,18 +2746,16 @@ def download_pdf():
     return send_file(path, as_attachment=True)
 
 
-@app.route("/download_generated_report/<token>")
-@login_required
-def download_generated_report(token):
-    """Download one existing pipeline PDF after authorization and path checks."""
+def _resolve_generated_report(token):
+    """Resolve a signed catalog token to an authorized existing PDF."""
 
     payload = load_report_token(token)
     if not payload or payload.get("service") != "generatedClimateReport":
-        return "Reporte no válido", 404
+        raise LookupError("invalid report token")
     authorized_sites = (session.get("fieldsChillHours") or {}).keys()
     is_admin = can_view_all_generated_reports()
     if not is_admin and payload.get("site") not in authorized_sites:
-        return "Reporte no autorizado", 403
+        raise PermissionError("unauthorized report")
     catalog_sites = None if is_admin else authorized_sites
     catalog_paths = {
         report["relative_path"]
@@ -2765,11 +2765,77 @@ def download_generated_report(token):
         and report["report_date"] == payload.get("report_date")
     }
     if payload.get("relative_path") not in catalog_paths:
-        return "Reporte no encontrado", 404
+        raise LookupError("report is not in the current catalog")
     path = resolve_relative_pdf(payload.get("relative_path"))
     if path is None:
+        raise LookupError("report file not found")
+    return path, payload
+
+
+@app.route("/view_generated_report/<token>")
+@login_required
+def view_generated_report(token):
+    """Open an existing PDF inline in the browser."""
+
+    try:
+        path, _ = _resolve_generated_report(token)
+    except PermissionError:
+        return "Reporte no autorizado", 403
+    except LookupError:
+        return "Reporte no encontrado", 404
+    return send_file(path, as_attachment=False, mimetype="application/pdf", download_name=path.name)
+
+
+@app.route("/download_generated_report/<token>")
+@login_required
+def download_generated_report(token):
+    """Download one existing pipeline PDF as an attachment."""
+
+    try:
+        path, _ = _resolve_generated_report(token)
+    except PermissionError:
+        return "Reporte no autorizado", 403
+    except LookupError:
         return "Reporte no encontrado", 404
     return send_file(path, as_attachment=True, download_name=path.name)
+
+
+@app.route("/download_generated_reports", methods=["POST"])
+@login_required
+def download_generated_reports():
+    """Download the selected existing PDFs as a ZIP archive."""
+
+    payload = request.get_json(silent=True) or {}
+    tokens = payload.get("tokens")
+    if not isinstance(tokens, list) or not tokens:
+        return jsonify({"error": "No hay reportes seleccionados"}), 400
+    if len(tokens) > 500:
+        return jsonify({"error": "Demasiados reportes seleccionados"}), 400
+
+    reports = []
+    seen = set()
+    try:
+        for token in tokens:
+            path, report = _resolve_generated_report(token)
+            if report["relative_path"] in seen:
+                continue
+            seen.add(report["relative_path"])
+            reports.append((path, report))
+    except PermissionError:
+        return jsonify({"error": "Reporte no autorizado"}), 403
+    except LookupError:
+        return jsonify({"error": "Uno de los reportes ya no está disponible"}), 404
+
+    archive = io.BytesIO()
+    with zipfile.ZipFile(archive, "w", compression=zipfile.ZIP_DEFLATED) as zip_file:
+        for path, report in reports:
+            arcname = "/".join(
+                [report["site"], report["kind"], report["report_date"], path.name]
+            )
+            zip_file.write(path, arcname=arcname)
+    archive.seek(0)
+    filename = f"climate-reports-{datetime.datetime.now().strftime('%Y%m%d-%H%M%S')}.zip"
+    return send_file(archive, mimetype="application/zip", as_attachment=True, download_name=filename)
 
 
 @app.route("/images/<path:filepath>")

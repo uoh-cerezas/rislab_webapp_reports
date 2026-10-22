@@ -86,21 +86,7 @@
 
                   <div class="col-sm-12 col-md-6">
                     <div id="bootstrap-data-table_filter" class="dataTables_filter">
-                      <label>Campo: <input type="text" id="filterField" class="form-control form-control-sm"
-                          placeholder="">
-                      </label>
-                    </div>
-                  </div>
-                  <div class="col-sm-12 col-md-6">
-                    <div id="bootstrap-data-table_filter" class="dataTables_filter">
                       <label>Desde (Fecha de inicio): <input type="date" id="filterDateFrom" class="form-control form-control-sm"
-                          placeholder="">
-                      </label>
-                    </div>
-                  </div>
-                  <div class="col-sm-12 col-md-6">
-                    <div id="bootstrap-data-table_filter" class="dataTables_filter">
-                      <label>Cuartel: <input type="text" id="filterZone" class="form-control form-control-sm"
                           placeholder="">
                       </label>
                     </div>
@@ -130,6 +116,7 @@
                   <div class="col-sm-12 col-md-6">
                     <div id="bootstrap-data-table_filter" class="dataTables_filter"> <button id="clearFilters"
                         class="btn btn-outline-primary">Limpiar filtros</button>
+                      <button id="downloadAll" class="btn btn-primary ml-2">Descargar todos</button>
                     </div>
                   </div>
 
@@ -142,12 +129,11 @@
                 <table class="table">
                   <thead>
                     <tr>
-                      <th scope="col">Numero</th>
-                      <th scope="col">Campo</th>
-                      <th scope="col">Cuartel</th>
-                      <th scope="col">Período</th>
+                      <th scope="col">Fecha</th>
                       <th scope="col">Tipo</th>
-                      <th scope="col">PDF</th>
+                      <th scope="col">Campo</th>
+                      <th scope="col">Período</th>
+                      <th scope="col">Acciones</th>
                     </tr>
                   </thead>
                   <tbody id="tableBody">
@@ -189,17 +175,14 @@
       const pageInfo = document.getElementById('pageInfo');
       const prevBtn = document.getElementById('prevBtn');
       const nextBtn = document.getElementById('nextBtn');
+      const downloadAllBtn = document.getElementById('downloadAll');
 
       function applyFilters(data) {
-        const fieldFilter = document.getElementById('filterField').value.toLowerCase();
-        const zoneFilter = document.getElementById('filterZone').value;
         const fromDate = document.getElementById('filterDateFrom').value;
         const toDate = document.getElementById('filterDateTo').value;
         const kindFilter = document.getElementById('filterKind').value;
 
         return data.filter(r => {
-          const matchesField = (r["data-field"] || '').toLowerCase().includes(fieldFilter);
-          const matchesZone = zoneFilter === '' || String(r.zone || '').toLowerCase().includes(zoneFilter.toLowerCase());
           const matchesKind = kindFilter === '' || r.kind === kindFilter;
           
           let matchesDate = true;
@@ -209,7 +192,7 @@
             if (toDate && reportDate > toDate) matchesDate = false;
           }
           
-          return matchesField && matchesZone && matchesKind && matchesDate;
+          return matchesKind && matchesDate;
         });
       }
 
@@ -237,14 +220,20 @@
           f_name = f_name.charAt(0).toUpperCase() + f_name.slice(1);
           const formattedTimeIn = r.in_date ? new Date(r.in_date).toLocaleDateString('es-CL') : '-';
           const formattedTimeOut = r.out_date ? new Date(r.out_date).toLocaleDateString('es-CL') : '-';
-          const timeTable = formattedTimeIn + " a " + formattedTimeOut
+          const formattedReportDate = r.report_date
+            ? new Date(`${r.report_date}T12:00:00`).toLocaleDateString('es-CL')
+            : '-';
+          const timeTable = formattedTimeIn + " a " + formattedTimeOut;
           const row = `<tr>
-            <th scope="row">${escapeHtml(r.name)}</th>
-            <td>${escapeHtml(f_name)}</td>
-            <td>${escapeHtml(r.zone || '-')}</td>
-            <td>${timeTable}</td>
+            <td>${escapeHtml(formattedReportDate)}</td>
             <td>${escapeHtml(r.tipo)}</td>
-            <td><a href="${escapeHtml(r.download_url)}" target="_blank" rel="noopener">Descargar PDF</a></td>
+            <td>${escapeHtml(f_name)}</td>
+            <td>${timeTable}</td>
+            <td>
+              <a href="${escapeHtml(r.view_url)}" target="_blank" rel="noopener">Visualizar PDF</a>
+              <span class="mx-1">|</span>
+              <a href="${escapeHtml(r.download_url)}">Descargar PDF</a>
+            </td>
           </tr>`;
           tableBody.insertAdjacentHTML('beforeend', row);
         }
@@ -269,14 +258,6 @@
         }
       });
 
-      document.getElementById('filterField').addEventListener('input', () => {
-        currentPage = 1;
-        renderTable();
-      });
-      document.getElementById('filterZone').addEventListener('input', () => {
-        currentPage = 1;
-        renderTable();
-      });
       document.getElementById('filterDateTo').addEventListener('input', () => {
         currentPage = 1;
         renderTable();
@@ -286,7 +267,7 @@
         renderTable();
       });
       document.getElementById('clearFilters').addEventListener('click', () => {
-        ["filterField", "filterZone", "filterDateTo", "filterDateFrom", "filterKind"].forEach(id => {
+        ["filterDateTo", "filterDateFrom", "filterKind"].forEach(id => {
           document.getElementById(id).value = '';
         });
         currentPage = 1;
@@ -295,6 +276,41 @@
       document.getElementById('filterKind').addEventListener('change', () => {
         currentPage = 1;
         renderTable();
+      });
+
+      downloadAllBtn.addEventListener('click', async () => {
+        const filteredData = applyFilters(reportsData);
+        if (!filteredData.length) {
+          alert('No hay reportes para descargar con los filtros actuales.');
+          return;
+        }
+        downloadAllBtn.disabled = true;
+        downloadAllBtn.textContent = 'Preparando ZIP...';
+        try {
+          const response = await fetch("{{ url_for('download_generated_reports') }}", {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({tokens: filteredData.map(r => r.token)})
+          });
+          if (!response.ok) {
+            const error = await response.json().catch(() => ({}));
+            throw new Error(error.error || 'No fue posible preparar el ZIP.');
+          }
+          const blob = await response.blob();
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = 'climate-reports.zip';
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+          URL.revokeObjectURL(url);
+        } catch (error) {
+          alert(error.message);
+        } finally {
+          downloadAllBtn.disabled = false;
+          downloadAllBtn.textContent = 'Descargar todos';
+        }
       });
       renderTable(); 
     </script>

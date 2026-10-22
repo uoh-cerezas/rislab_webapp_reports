@@ -79,6 +79,11 @@ only see sites authorized in their existing session and can filter daily,
 weekly and monthly reports. Downloads use a signed token and a path confined
 to the `/data` mount.
 
+Each row provides inline PDF visualization and individual download. The
+`Descargar todos` action sends the currently filtered report tokens to the
+server and returns a ZIP archive. The archive is created in memory and is not
+stored in the reporting directory.
+
 Administrators (`role == 0`) can inspect all generated reports. For a temporary
 test account with no assigned fields, set
 `CLIMATE_REPORTS_ALLOW_UNASSIGNED=true` only in the test container environment;
