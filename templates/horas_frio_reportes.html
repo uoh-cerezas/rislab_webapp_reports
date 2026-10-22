@@ -132,7 +132,6 @@
                       <th scope="col">Fecha</th>
                       <th scope="col">Tipo</th>
                       <th scope="col">Campo</th>
-                      <th scope="col">Período</th>
                       <th scope="col">Acciones</th>
                     </tr>
                   </thead>
@@ -218,17 +217,13 @@
           let f_name = (r["data-field"] || '').slice((r["data-field"] || '').indexOf("-") + 1);
           f_name = f_name.replace(/-/g, " "); // replace all "-" with spaces
           f_name = f_name.charAt(0).toUpperCase() + f_name.slice(1);
-          const formattedTimeIn = r.in_date ? new Date(r.in_date).toLocaleDateString('es-CL') : '-';
-          const formattedTimeOut = r.out_date ? new Date(r.out_date).toLocaleDateString('es-CL') : '-';
           const formattedReportDate = r.report_date
             ? new Date(`${r.report_date}T12:00:00`).toLocaleDateString('es-CL')
             : '-';
-          const timeTable = formattedTimeIn + " a " + formattedTimeOut;
           const row = `<tr>
             <td>${escapeHtml(formattedReportDate)}</td>
             <td>${escapeHtml(r.tipo)}</td>
             <td>${escapeHtml(f_name)}</td>
-            <td>${timeTable}</td>
             <td>
               <a href="${escapeHtml(r.view_url)}" target="_blank" rel="noopener">Visualizar PDF</a>
               <span class="mx-1">|</span>
