@@ -14,7 +14,7 @@ class ReportCatalogTests(unittest.TestCase):
         os.environ["CLIMATE_REPORTING_DATA_ROOT"] = str(self.root)
 
         run = self.root / "runs" / "daily" / "2026-06-29"
-        pdf = run / "07_pdf" / "fic1" / "daily.pdf"
+        pdf = run / "07_pdf" / "fic2" / "daily.pdf"
         pdf.parent.mkdir(parents=True)
         pdf.write_bytes(b"%PDF-test")
         (run / "manifest.json").write_text(
@@ -30,7 +30,8 @@ class ReportCatalogTests(unittest.TestCase):
                     "stages": {
                         "pdf": {
                             "result": [
-                                {"site": "fic1-rengo-agritorre", "generated": True, "path": str(pdf)}
+                                {"site": "fic2-rengo-agritorre", "generated": True, "path": str(pdf)},
+                                {"site": "fic1-rengo-agritorre", "generated": True, "path": str(pdf)},
                             ]
                         }
                     },
@@ -44,10 +45,12 @@ class ReportCatalogTests(unittest.TestCase):
         self.temp_dir.cleanup()
 
     def test_lists_only_authorized_generated_reports(self):
-        reports = list_reports({"fic1-rengo-agritorre"})
+        reports = list_reports({"fic2-rengo-agritorre"})
         self.assertEqual(len(reports), 1)
         self.assertEqual(reports[0]["kind"], "daily")
-        self.assertEqual(reports[0]["relative_path"], "runs/daily/2026-06-29/07_pdf/fic1/daily.pdf")
+        self.assertEqual(reports[0]["relative_path"], "runs/daily/2026-06-29/07_pdf/fic2/daily.pdf")
+
+        self.assertEqual(list_reports({"fic1-rengo-agritorre"}), [])
 
         self.assertEqual(list_reports({"other-site"}), [])
 

@@ -16,6 +16,7 @@ from typing import Any, Iterable
 
 REPORT_KINDS = {"daily", "weekly", "monthly"}
 KIND_LABELS = {"daily": "Diario", "weekly": "Semanal", "monthly": "Mensual"}
+REPORT_SITE_PREFIX = "fic2-"
 
 
 def data_root() -> Path:
@@ -70,7 +71,12 @@ def _manifest_records(manifest_path: Path, root: Path) -> Iterable[dict[str, Any
             continue
         site = item.get("site")
         pdf_path = _safe_pdf_path(root, item.get("path"))
-        if not isinstance(site, str) or not site or pdf_path is None:
+        if (
+            not isinstance(site, str)
+            or not site
+            or not site.casefold().startswith(REPORT_SITE_PREFIX)
+            or pdf_path is None
+        ):
             continue
         relative = pdf_path.relative_to(root).as_posix()
         yield {

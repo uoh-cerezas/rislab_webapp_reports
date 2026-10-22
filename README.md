@@ -75,9 +75,10 @@ while testing. The `start-app.sh` script expects an external runtime env file
 must never be committed to this repository.
 
 The report catalog is available at `/reportes_chillhours` after login. Users
-only see sites authorized in their existing session and can filter daily,
-weekly and monthly reports. Downloads use a signed token and a path confined
-to the `/data` mount.
+only see sites authorized in their existing session whose identifiers start
+with `fic2-`; `fic1-` entries are intentionally excluded. They can filter
+daily, weekly and monthly reports. Downloads use a signed token and a path
+confined to the `/data` mount.
 
 ## Administrator-only NOC integration
 
