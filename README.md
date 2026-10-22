@@ -79,6 +79,11 @@ only see sites authorized in their existing session and can filter daily,
 weekly and monthly reports. Downloads use a signed token and a path confined
 to the `/data` mount.
 
+Administrators (`role == 0`) can inspect all generated reports. For a temporary
+test account with no assigned fields, set
+`CLIMATE_REPORTS_ALLOW_UNASSIGNED=true` only in the test container environment;
+leave it unset or `false` in production.
+
 Run catalog tests with Python 3.10+:
 
 ```bash

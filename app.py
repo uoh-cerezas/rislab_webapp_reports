@@ -282,6 +282,24 @@ def load_report_token(token: str) -> dict | None:
         return None
 
 
+def can_view_all_generated_reports() -> bool:
+    """Allow catalog-wide inspection for admins or an explicit test account.
+
+    The environment switch is disabled by default and is intended only for a
+    controlled test container when an account has no assigned fields.
+    """
+
+    if session.get("role") == 0:
+        return True
+    if session.get("fieldsChillHours"):
+        return False
+    return os.environ.get("CLIMATE_REPORTS_ALLOW_UNASSIGNED", "false").lower() in {
+        "1",
+        "true",
+        "yes",
+    }
+
+
 # consultando a mongo:
 def field_required(f):
     @wraps(f)
@@ -1240,13 +1258,20 @@ def reportes_buds():
 @app.route("/reportes_chillhours")
 @login_required
 def reportes_chillhours():
-    authorized_sites = (session.get("fieldsChillHours") or {}).keys()
+    user_fields = session.get("fieldsChillHours") or {}
+    is_admin = can_view_all_generated_reports()
+    # Administrators can inspect the complete read-only catalog. Regular users
+    # remain restricted to the fields assigned to their profile.
+    authorized_sites = None if is_admin else user_fields.keys()
     # MongoDB is consulted only to enrich an already-generated catalog entry
     # with the existing report number and zone. A database failure must not
     # hide the read-only PDF catalog.
     metadata_by_period = {}
     try:
-        _, metadata_rows = database_get_chill_hours_reports(session.get("fieldsChillHours") or {})
+        metadata_fields = user_fields
+        if is_admin:
+            metadata_fields = {report["site"]: {} for report in list_reports(None)}
+        _, metadata_rows = database_get_chill_hours_reports(metadata_fields)
         for metadata in metadata_rows or []:
             key = (
                 metadata.get("data-field"),
@@ -2728,11 +2753,13 @@ def download_generated_report(token):
     if not payload or payload.get("service") != "generatedClimateReport":
         return "Reporte no válido", 404
     authorized_sites = (session.get("fieldsChillHours") or {}).keys()
-    if payload.get("site") not in authorized_sites:
+    is_admin = can_view_all_generated_reports()
+    if not is_admin and payload.get("site") not in authorized_sites:
         return "Reporte no autorizado", 403
+    catalog_sites = None if is_admin else authorized_sites
     catalog_paths = {
         report["relative_path"]
-        for report in list_reports(authorized_sites)
+        for report in list_reports(catalog_sites)
         if report["site"] == payload.get("site")
         and report["kind"] == payload.get("kind")
         and report["report_date"] == payload.get("report_date")
