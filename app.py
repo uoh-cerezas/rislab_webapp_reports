@@ -532,6 +532,26 @@ NOC_ADMIN_ONLY = os.environ.get("NOC_ADMIN_ONLY", "true").strip().lower() not in
     "0", "false", "no", "off"
 }
 
+ADMIN_CONFIG_UPSTREAM_URL = os.environ.get(
+    "ADMIN_CONFIG_UPSTREAM_URL", "http://127.0.0.1:8070"
+).rstrip("/")
+ADMIN_CONFIG_ADMIN_ONLY = os.environ.get(
+    "ADMIN_CONFIG_ADMIN_ONLY", "true"
+).strip().lower() not in {"0", "false", "no", "off"}
+
+
+def config_admin_required(f):
+    """Require an authenticated administrator before proxying configuration."""
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if "user" not in session:
+            return redirect(url_for("login"))
+        if ADMIN_CONFIG_ADMIN_ONLY and session.get("role") != 0:
+            return "Forbidden", 403
+        return f(*args, **kwargs)
+
+    return decorated_function
+
 
 @app.route("/noc", defaults={"noc_path": ""}, methods=["GET"])
 @app.route("/noc/", defaults={"noc_path": ""}, methods=["GET"])
@@ -556,6 +576,34 @@ def noc_proxy(noc_path):
         for key, value in upstream.headers.items()
         if key.lower() not in hop_by_hop
     }
+    return Response(upstream.content, status=upstream.status_code, headers=headers)
+
+
+@app.route("/admin/config", methods=["GET"])
+@config_admin_required
+def config_proxy_root():
+    """Keep the trailing slash so relative dashboard assets resolve correctly."""
+    return redirect(url_for("config_proxy", config_path=""))
+
+
+@app.route("/admin/config/", defaults={"config_path": ""}, methods=["GET"])
+@app.route("/admin/config/<path:config_path>", methods=["GET"])
+@config_admin_required
+def config_proxy(config_path):
+    """Forward the read-only configuration dashboard to its standalone service."""
+    target = f"{ADMIN_CONFIG_UPSTREAM_URL}/{config_path}" if config_path else f"{ADMIN_CONFIG_UPSTREAM_URL}/"
+    try:
+        upstream = requests.get(
+            target,
+            params=request.args,
+            headers={"Accept": request.headers.get("Accept", "*/*")},
+            timeout=30,
+        )
+    except requests.RequestException as error:
+        return f"Configuration dashboard unavailable: {error}", 502
+
+    hop_by_hop = {"connection", "keep-alive", "proxy-authenticate", "proxy-authorization", "te", "trailers", "transfer-encoding", "upgrade"}
+    headers = {key: value for key, value in upstream.headers.items() if key.lower() not in hop_by_hop}
     return Response(upstream.content, status=upstream.status_code, headers=headers)
 
 

@@ -11,6 +11,8 @@ ENV_FILE="${DASHBOARD_ENV_FILE:-/home/uoh/cerezas_web_server/config/dashboard.en
 DATA_ROOT="${CLIMATE_REPORTING_DATA_HOST:-/home/uoh/cerezas_web_server/data/climate-reporting}"
 NOC_UPSTREAM_URL="${NOC_UPSTREAM_URL:-http://ttn-noc:8060}"
 NOC_ADMIN_ONLY="${NOC_ADMIN_ONLY:-true}"
+ADMIN_CONFIG_UPSTREAM_URL="${ADMIN_CONFIG_UPSTREAM_URL:-http://climate-admin-dashboard:8070}"
+ADMIN_CONFIG_ADMIN_ONLY="${ADMIN_CONFIG_ADMIN_ONLY:-true}"
 
 test -r "$ENV_FILE" || {
   echo "Missing runtime env file: $ENV_FILE" >&2
@@ -30,6 +32,8 @@ docker run -d \
   -e CLIMATE_REPORTING_DATA_ROOT=/data \
   -e NOC_UPSTREAM_URL="$NOC_UPSTREAM_URL" \
   -e NOC_ADMIN_ONLY="$NOC_ADMIN_ONLY" \
+  -e ADMIN_CONFIG_UPSTREAM_URL="$ADMIN_CONFIG_UPSTREAM_URL" \
+  -e ADMIN_CONFIG_ADMIN_ONLY="$ADMIN_CONFIG_ADMIN_ONLY" \
   -v "$DATA_ROOT:/data:ro" \
   --restart unless-stopped \
   "$IMAGE"
