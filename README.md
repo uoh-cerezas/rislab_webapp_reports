@@ -79,6 +79,33 @@ only see sites authorized in their existing session and can filter daily,
 weekly and monthly reports. Downloads use a signed token and a path confined
 to the `/data` mount.
 
+## Administrator-only NOC integration
+
+The `/noc` route is an authenticated gateway to the independent `ttn_noc`
+service. It reuses this application's existing session and administrator role
+(`role == 0`); unauthenticated users are redirected to `/login`, and
+authenticated non-administrators receive `403 Forbidden`. The NOC container
+does not implement a second login and must not be exposed directly to the
+internet.
+
+Set `NOC_UPSTREAM_URL` in the dashboard container. Use
+`http://ttn-noc:8060` when both containers share a Docker network, or
+`http://host.docker.internal:8060` for a local Docker Desktop test. The NOC
+container must use `NOC_BASE_PATH=/noc` so its browser assets and API requests
+remain below the website prefix.
+
+The `start-app.sh` helper forwards `NOC_UPSTREAM_URL` automatically:
+
+```bash
+NOC_UPSTREAM_URL=http://host.docker.internal:8060 \
+DASHBOARD_ENV_FILE=/path/to/dashboard.env \
+APP_NAME=dashboard_app_noc_test PORT=8051 \
+./start-app.sh
+```
+
+The website proxy is read-only: it forwards only GET requests to the NOC and
+does not write to TTN or MongoDB.
+
 Each row provides inline PDF visualization and individual download. The
 `Descargar todos` action sends the currently filtered report tokens to the
 server and returns a ZIP archive. The archive is created in memory and is not

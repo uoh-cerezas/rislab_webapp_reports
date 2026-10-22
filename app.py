@@ -10,6 +10,7 @@ from flask import (
     flash,
     send_file,
     g,
+    Response,
 )
 from config import config
 import os
@@ -24,6 +25,7 @@ from itsdangerous import URLSafeSerializer, BadSignature
 import climate_processing
 import math
 import random
+import requests
 
 # import smtplib
 
@@ -505,6 +507,53 @@ def admin_required(f):
         return f(*args, **kwargs)
 
     return decorated_function
+
+
+def noc_admin_required(f):
+    """Protect the NOC while keeping its own container authentication-free.
+
+    The website is the public entry point, so authentication and authorization
+    are enforced here before any request is forwarded to the internal NOC
+    service.  The NOC API is read-only and is never exposed directly.
+    """
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if "user" not in session:
+            return redirect(url_for("login"))
+        if session.get("role") != 0:
+            return "Forbidden", 403
+        return f(*args, **kwargs)
+
+    return decorated_function
+
+
+NOC_UPSTREAM_URL = os.environ.get("NOC_UPSTREAM_URL", "http://127.0.0.1:8060").rstrip("/")
+
+
+@app.route("/noc", defaults={"noc_path": ""}, methods=["GET"])
+@app.route("/noc/", defaults={"noc_path": ""}, methods=["GET"])
+@app.route("/noc/<path:noc_path>", methods=["GET"])
+@noc_admin_required
+def noc_proxy(noc_path):
+    """Forward the authenticated NOC page/API/assets to the internal service."""
+    target = f"{NOC_UPSTREAM_URL}/{noc_path}" if noc_path else f"{NOC_UPSTREAM_URL}/"
+    try:
+        upstream = requests.get(
+            target,
+            params=request.args,
+            headers={"Accept": request.headers.get("Accept", "*/*")},
+            timeout=30,
+        )
+    except requests.RequestException as error:
+        return f"NOC service unavailable: {error}", 502
+
+    hop_by_hop = {"connection", "keep-alive", "proxy-authenticate", "proxy-authorization", "te", "trailers", "transfer-encoding", "upgrade"}
+    headers = {
+        key: value
+        for key, value in upstream.headers.items()
+        if key.lower() not in hop_by_hop
+    }
+    return Response(upstream.content, status=upstream.status_code, headers=headers)
 
 
 # Root
