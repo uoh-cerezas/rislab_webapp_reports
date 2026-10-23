@@ -111,6 +111,20 @@ APP_NAME=dashboard_app_noc_test PORT=8051 \
 The website proxy is read-only: it forwards only GET requests to the NOC and
 does not write to TTN or MongoDB.
 
+## Administrator configuration dashboard
+
+The administrator menu includes `Configuración de reportería`, which opens the
+standalone `climate_admin_dashboard` in a new tab. The website keeps the
+authentication boundary (`role == 0`) and proxies the dashboard at
+`/admin/config/`; the dashboard itself does not implement a second login.
+
+For local integration, start both containers on the same Docker network and
+set `ADMIN_CONFIG_UPSTREAM_URL=http://climate-admin-dashboard:8070` when
+running `start-app.sh`. The dashboard's local compose override creates the
+network `fic-local-network` by default. Configuration files are mounted into
+the dashboard separately; no database or report-generation process is
+started by this integration.
+
 Each row provides inline PDF visualization and individual download. The
 `Descargar todos` action sends the currently filtered report tokens to the
 server and returns a ZIP archive. The archive is created in memory and is not
